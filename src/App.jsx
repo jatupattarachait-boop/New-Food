@@ -263,6 +263,15 @@ const FRIDGE_PRESETS = [
 
 export default function App() {
   const [theme, setTheme] = useState('light');
+  
+  const getPasswordStrength = (pass) => {
+    if (!pass) return { label: 'ไม่มีข้อมูล', color: '#888', width: '0%' };
+    if (pass.length < 6) return { label: 'อ่อนเกินไป (Weak)', color: '#ef4444', width: '30%' };
+    const hasLetter = /[a-zA-Z]/.test(pass);
+    const hasNumber = /[0-9]/.test(pass);
+    if (pass.length >= 8 && hasLetter && hasNumber) return { label: 'แข็งแกร่ง (Strong)', color: '#8eac50', width: '100%' };
+    return { label: 'ปานกลาง (Medium)', color: '#d4af37', width: '60%' };
+  };
   const [language, setLanguage] = useState('th');
   const [activeTab, setActiveTab] = useState(() => localStorage.getItem('nfood_active_tab') || 'home');
   const [showLangMenu, setShowLangMenu] = useState(false);
@@ -300,6 +309,18 @@ export default function App() {
   const [otpCode, setOtpCode] = useState('');
   const [otpSent, setOtpSent] = useState(false);
   const [otpError, setOtpError] = useState('');
+
+  // ระบบลืมรหัสผ่านและสเปกสมัครสมาชิกเพิ่มเติม
+  const [forgotStep, setForgotStep] = useState(0); 
+  const [forgotInput, setForgotInput] = useState('');
+  const [forgotOtp, setForgotOtp] = useState('');
+  const [forgotNewPass, setForgotNewPass] = useState('');
+  const [forgotConfirmPass, setForgotConfirmPass] = useState('');
+  const [forgotCountdown, setForgotCountdown] = useState(60);
+  const [regFirstName, setRegFirstName] = useState('');
+  const [regLastName, setRegLastName] = useState('');
+  const [regAge, setRegAge] = useState('');
+  const [rememberPassword, setRememberPassword] = useState(false);
 
   // บันทึกสถานะหน้าต่างและบัญชีลงเครื่องแบบถาวร
   useEffect(() => {
@@ -418,6 +439,17 @@ export default function App() {
     return () => clearInterval(interval);
   }, [timerActive, timerSeconds]);
 
+  // ตัวนับเวลาสำหรับ OTP ลืมรหัสผ่าน 60 วินาที
+  useEffect(() => {
+    let timer = null;
+    if (forgotStep === 2 && forgotCountdown > 0) {
+      timer = setInterval(() => {
+        setForgotCountdown(prev => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [forgotStep, forgotCountdown]);
+
   // ระบบสับเปลี่ยนทิศทาง RTL ของภาษาอาหรับ
   const isRTL = language === 'ar';
 
@@ -426,7 +458,7 @@ export default function App() {
   // ระบบสมัครสมาชิกจำลองบันทึกลงในเครื่อง
   const handleSignUpSubmit = (e) => {
     e.preventDefault();
-    if (!regName || !regEmail || !regPassword || !regConfirmPassword) {
+    if (!regName || !regEmail || !regPassword || !regConfirmPassword || !regFirstName || !regLastName || !regAge) {
       setOtpError('กรุณากรอกข้อมูลสมัครสมาชิกให้ครบถ้วน');
       return;
     }
@@ -442,9 +474,22 @@ export default function App() {
       return;
     }
 
-    const newAccount = { emailOrPhone: regEmail, password: regPassword, name: regName, isAdmin: false };
+    const newAccount = { 
+      emailOrPhone: regEmail, 
+      password: regPassword, 
+      name: regName, 
+      firstName: regFirstName,
+      lastName: regLastName,
+      age: parseInt(regAge) || 20,
+      isAdmin: false 
+    };
     accounts.push(newAccount);
     localStorage.setItem('nfood_accounts', JSON.stringify(accounts));
+
+    if (rememberPassword) {
+      localStorage.setItem('nfood_remembered_email', regEmail);
+      localStorage.setItem('nfood_remembered_pass', regPassword);
+    }
 
     alert(`สมัครสมาชิกสำเร็จแล้ว! ยินดีต้อนรับคุณ ${regName}. กรุณาลงชื่อเข้าใช้งานด้วยบัญชีนี้`);
     setOtpError('');
@@ -475,6 +520,84 @@ export default function App() {
     } else {
       setOtpError('อีเมล รหัสผ่านไม่ถูกต้อง หรือโปรดยังไม่ได้สมัครบัญชี');
     }
+  };
+
+  // ยื่นคำขอลืมรหัสผ่าน ขั้นตอนที่ 1 (กรอกอีเมล/เบอร์โทรศัพท์)
+  const handleForgot1Submit = (e) => {
+    e.preventDefault();
+    if (!forgotInput) {
+      setOtpError('กรุณากรอกอีเมลหรือเบอร์โทรศัพท์เพื่อตรวจสอบ');
+      return;
+    }
+    
+    const accounts = JSON.parse(localStorage.getItem('nfood_accounts') || '[]');
+    const exists = accounts.find(acc => acc.emailOrPhone.toLowerCase() === forgotInput.toLowerCase());
+    if (!exists && forgotInput !== 'admin@nfood.com') {
+      setOtpError('ไม่พบบัญชีนี้ในฐานข้อมูลระบบ');
+      return;
+    }
+
+    setForgotStep(2);
+    setForgotCountdown(60);
+    setOtpError('');
+    alert(`ระบบจำลองได้ส่งรหัส OTP 6 หลักไปยัง ${forgotInput} เรียบร้อยแล้ว (รหัสทดสอบคือ 123456)`);
+  };
+
+  // ยืนยันรหัส OTP ขั้นตอนที่ 2
+  const handleForgot2Submit = (e) => {
+    e.preventDefault();
+    if (forgotOtp !== '123456') {
+      setOtpError('รหัส OTP ไม่ถูกต้อง กรุณากรอกรหัส 123456 สำหรับการทดสอบ');
+      return;
+    }
+    setForgotStep(3);
+    setOtpError('');
+  };
+
+  // ตั้งรหัสผ่านใหม่ ขั้นตอนที่ 3
+  const handleForgot3Submit = (e) => {
+    e.preventDefault();
+    if (!forgotNewPass || !forgotConfirmPass) {
+      setOtpError('กรุณากรอกรหัสผ่านใหม่ให้ครบถ้วน');
+      return;
+    }
+    if (forgotNewPass !== forgotConfirmPass) {
+      setOtpError('รหัสผ่านใหม่และการยืนยันรหัสผ่านไม่ตรงกัน');
+      return;
+    }
+    if (forgotNewPass.length < 6) {
+      setOtpError('รหัสผ่านใหม่ต้องมีความยาวอย่างน้อย 6 ตัวอักษร');
+      return;
+    }
+
+    const accounts = JSON.parse(localStorage.getItem('nfood_accounts') || '[]');
+    let updated = false;
+    const newAccounts = accounts.map(acc => {
+      if (acc.emailOrPhone.toLowerCase() === forgotInput.toLowerCase()) {
+        updated = true;
+        return { ...acc, password: forgotNewPass };
+      }
+      return acc;
+    });
+
+    if (updated) {
+      localStorage.setItem('nfood_accounts', JSON.stringify(newAccounts));
+    } else if (forgotInput === 'admin@nfood.com') {
+      const adminAcc = { emailOrPhone: 'admin@nfood.com', password: forgotNewPass, name: 'คุณศิริชัย เลิศล้ำ', isAdmin: true };
+      accounts.push(adminAcc);
+      localStorage.setItem('nfood_accounts', JSON.stringify(accounts));
+    }
+
+    alert('รีเซ็ตรหัสผ่านใหม่สำเร็จแล้ว! กรุณาเข้าสู่ระบบด้วยรหัสผ่านใหม่ของคุณ');
+    setForgotStep(0);
+    setIsSignUp(false);
+    setLoginEmail(forgotInput);
+    setLoginPassword(forgotNewPass);
+    setForgotInput('');
+    setForgotOtp('');
+    setForgotNewPass('');
+    setForgotConfirmPass('');
+    setOtpError('');
   };
 
   // จำลองเข้าสู่ระบบ Google / Line
@@ -967,24 +1090,26 @@ export default function App() {
             <p style={{ color: 'var(--color-text-muted)', marginBottom: '20px', fontSize: '0.85rem' }}>{t.loginSubtitle}</p>
             
             {/* แท็บสลับหน้าจอ */}
-            <div style={{ display: 'flex', borderBottom: '1px solid var(--border-card)', marginBottom: 20 }}>
-              <button 
-                onClick={() => { setIsSignUp(false); setOtpError(''); }} 
-                style={{ flex: 1, border: 'none', background: 'none', padding: '10px 0', fontSize: '0.9rem', cursor: 'pointer', borderBottom: !isSignUp ? '2px solid var(--color-accent)' : 'none', color: !isSignUp ? 'var(--color-text-main)' : 'var(--color-text-muted)', fontWeight: 600 }}
-              >
-                เข้าสู่ระบบ
-              </button>
-              <button 
-                onClick={() => { setIsSignUp(true); setOtpError(''); }} 
-                style={{ flex: 1, border: 'none', background: 'none', padding: '10px 0', fontSize: '0.9rem', cursor: 'pointer', borderBottom: isSignUp ? '2px solid var(--color-accent)' : 'none', color: isSignUp ? 'var(--color-text-main)' : 'var(--color-text-muted)', fontWeight: 600 }}
-              >
-                สมัครสมาชิก
-              </button>
-            </div>
+            {forgotStep === 0 && (
+              <div style={{ display: 'flex', borderBottom: '1px solid var(--border-card)', marginBottom: 20 }}>
+                <button 
+                  onClick={() => { setIsSignUp(false); setOtpError(''); }} 
+                  style={{ flex: 1, border: 'none', background: 'none', padding: '10px 0', fontSize: '0.9rem', cursor: 'pointer', borderBottom: !isSignUp ? '2px solid var(--color-accent)' : 'none', color: !isSignUp ? 'var(--color-text-main)' : 'var(--color-text-muted)', fontWeight: 600 }}
+                >
+                  เข้าสู่ระบบ
+                </button>
+                <button 
+                  onClick={() => { setIsSignUp(true); setOtpError(''); }} 
+                  style={{ flex: 1, border: 'none', background: 'none', padding: '10px 0', fontSize: '0.9rem', cursor: 'pointer', borderBottom: isSignUp ? '2px solid var(--color-accent)' : 'none', color: isSignUp ? 'var(--color-text-main)' : 'var(--color-text-muted)', fontWeight: 600 }}
+                >
+                  สมัครสมาชิก
+                </button>
+              </div>
+            )}
 
             {otpError && <div style={{ color: '#ef4444', background: 'rgba(239,68,68,0.1)', padding: 8, borderRadius: 8, fontSize: '0.8rem', marginBottom: 12 }}>{otpError}</div>}
 
-            {!isSignUp ? (
+            {forgotStep === 0 && !isSignUp && (
               /* หน้าเข้าสู่ระบบ (Sign In) */
               <div>
                 <form onSubmit={handleCustomSignInSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 20 }}>
@@ -1009,6 +1134,11 @@ export default function App() {
                       style={{ width: '100%', height: '40px', fontSize: '0.85rem' }}
                       required
                     />
+                  </div>
+                  <div style={{ textAlign: 'right', marginTop: -4, marginBottom: 8 }}>
+                    <button type="button" onClick={() => { setForgotStep(1); setOtpError(''); }} style={{ background: 'none', border: 'none', color: 'var(--color-accent)', fontSize: '0.8rem', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}>
+                      ลืมรหัสผ่าน? (Forgot Password?)
+                    </button>
                   </div>
                   <button type="submit" className="control-btn" style={{ justifyContent: 'center', height: '40px', background: 'var(--color-accent)', color: 'white', border: 'none', fontSize: '0.9rem', fontWeight: 600 }}>
                     ลงชื่อเข้าใช้งาน
@@ -1072,17 +1202,50 @@ export default function App() {
                   </form>
                 )}
               </div>
-            ) : (
+            )}
+
+            {forgotStep === 0 && isSignUp && (
               /* หน้าสมัครสมาชิก (Sign Up) */
               <form onSubmit={handleSignUpSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <div style={{ textAlign: 'left' }}>
+                <div style={{ display: 'flex', gap: 8 }}>
                   <input 
                     type="text" 
-                    placeholder="ชื่อผู้ใช้งาน (เช่น สมชาย ดีใจ)" 
+                    placeholder="ชื่อจริง (First Name)" 
+                    value={regFirstName}
+                    onChange={(e) => setRegFirstName(e.target.value)}
+                    className="form-input" 
+                    style={{ flex: 1, height: '40px', fontSize: '0.85rem' }}
+                    required
+                  />
+                  <input 
+                    type="text" 
+                    placeholder="นามสกุล (Last Name)" 
+                    value={regLastName}
+                    onChange={(e) => setRegLastName(e.target.value)}
+                    className="form-input" 
+                    style={{ flex: 1, height: '40px', fontSize: '0.85rem' }}
+                    required
+                  />
+                </div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <input 
+                    type="text" 
+                    placeholder="ชื่อผู้ใช้งาน (Display Name)" 
                     value={regName}
                     onChange={(e) => setRegName(e.target.value)}
                     className="form-input" 
-                    style={{ width: '100%', height: '40px', fontSize: '0.85rem' }}
+                    style={{ flex: 2, height: '40px', fontSize: '0.85rem' }}
+                    required
+                  />
+                  <input 
+                    type="number" 
+                    placeholder="อายุ (Age)" 
+                    value={regAge}
+                    onChange={(e) => setRegAge(e.target.value)}
+                    className="form-input" 
+                    style={{ flex: 1, height: '40px', fontSize: '0.85rem' }}
+                    min="1"
+                    max="120"
                     required
                   />
                 </div>
@@ -1119,13 +1282,152 @@ export default function App() {
                     required
                   />
                 </div>
+                
+                {/* Remember Password Checkbox */}
+                <div style={{ textAlign: 'left', margin: '4px 0' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--color-text-muted)', fontSize: '0.8rem', cursor: 'pointer', userSelect: 'none' }}>
+                    <input 
+                      type="checkbox" 
+                      checked={rememberPassword} 
+                      onChange={(e) => setRememberPassword(e.target.checked)} 
+                      style={{ width: '16px', height: '16px', accentColor: 'var(--color-accent)' }} 
+                    />
+                    Remember my Password
+                  </label>
+                </div>
+
                 <button type="submit" className="control-btn" style={{ justifyContent: 'center', height: '44px', background: 'var(--color-accent)', color: 'white', border: 'none', fontSize: '0.9rem', fontWeight: 'bold', marginTop: 10 }}>
                   ลงทะเบียนสมาชิกใหม่
                 </button>
               </form>
             )}
 
-            <button onClick={() => setShowLoginModal(false)} style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', fontSize: '0.8rem', marginTop: 20, cursor: 'pointer', textDecoration: 'underline' }}>
+            {forgotStep === 1 && (
+              /* ลืมรหัสผ่าน ขั้นตอนที่ 1 */
+              <form onSubmit={handleForgot1Submit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-text-main)', marginBottom: 8 }}>กู้คืนรหัสผ่าน (ขั้นตอนที่ 1)</h3>
+                <div style={{ textAlign: 'left' }}>
+                  <input 
+                    type="text" 
+                    placeholder="กรอกอีเมลหรือเบอร์โทรศัพท์ของคุณ" 
+                    value={forgotInput}
+                    onChange={(e) => setForgotInput(e.target.value)}
+                    className="form-input" 
+                    style={{ width: '100%', height: '40px', fontSize: '0.85rem' }}
+                    required
+                  />
+                </div>
+                <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+                  <button type="button" onClick={() => setForgotStep(0)} className="control-btn" style={{ flex: 1, justifyContent: 'center', height: '40px', background: 'rgba(0,0,0,0.05)', color: 'var(--color-text-main)', border: '1px solid var(--border-card)', fontSize: '0.85rem' }}>
+                    ยกเลิก
+                  </button>
+                  <button type="submit" className="control-btn" style={{ flex: 1, justifyContent: 'center', height: '40px', background: 'var(--color-accent)', color: 'white', border: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
+                    ส่งรหัส OTP
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {forgotStep === 2 && (
+              /* ลืมรหัสผ่าน ขั้นตอนที่ 2 */
+              <form onSubmit={handleForgot2Submit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-text-main)', marginBottom: 8 }}>ยืนยันรหัส OTP (ขั้นตอนที่ 2)</h3>
+                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem' }}>ส่งรหัสไปยัง {forgotInput} แล้ว</p>
+                <div style={{ textAlign: 'left' }}>
+                  <input 
+                    type="text" 
+                    placeholder="กรอกรหัส OTP 6 หลัก (123456)" 
+                    value={forgotOtp}
+                    onChange={(e) => setForgotOtp(e.target.value)}
+                    maxLength={6}
+                    className="form-input" 
+                    style={{ width: '100%', height: '40px', textAlign: 'center', fontSize: '0.95rem', letterSpacing: 4 }}
+                    required
+                  />
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8, margin: '8px 0' }}>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>ส่งรหัสใหม่ใน:</span>
+                  <div style={{ 
+                    width: '32px', 
+                    height: '32px', 
+                    borderRadius: '50%', 
+                    border: '2px solid var(--color-accent)', 
+                    display: 'flex', 
+                    justifyContent: 'center', 
+                    alignItems: 'center', 
+                    fontSize: '0.75rem', 
+                    fontWeight: 'bold', 
+                    color: 'var(--color-accent)' 
+                  }}>
+                    {forgotCountdown}
+                  </div>
+                </div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button type="button" onClick={() => setForgotStep(1)} className="control-btn" style={{ flex: 1, justifyContent: 'center', height: '40px', background: 'rgba(0,0,0,0.05)', color: 'var(--color-text-main)', border: '1px solid var(--border-card)', fontSize: '0.85rem' }}>
+                    ย้อนกลับ
+                  </button>
+                  <button type="submit" className="control-btn" style={{ flex: 1, justifyContent: 'center', height: '40px', background: 'var(--color-accent)', color: 'white', border: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
+                    ยืนยันรหัส OTP
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {forgotStep === 3 && (
+              /* ลืมรหัสผ่าน ขั้นตอนที่ 3 */
+              <form onSubmit={handleForgot3Submit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-text-main)', marginBottom: 8 }}>ตั้งรหัสผ่านใหม่ (ขั้นตอนที่ 3)</h3>
+                <div style={{ textAlign: 'left' }}>
+                  <input 
+                    type="password" 
+                    placeholder="รหัสผ่านใหม่" 
+                    value={forgotNewPass}
+                    onChange={(e) => setForgotNewPass(e.target.value)}
+                    className="form-input" 
+                    style={{ width: '100%', height: '40px', fontSize: '0.85rem' }}
+                    required
+                  />
+                </div>
+                <div style={{ textAlign: 'left' }}>
+                  <input 
+                    type="password" 
+                    placeholder="ยืนยันรหัสผ่านใหม่" 
+                    value={forgotConfirmPass}
+                    onChange={(e) => setForgotConfirmPass(e.target.value)}
+                    className="form-input" 
+                    style={{ width: '100%', height: '40px', fontSize: '0.85rem' }}
+                    required
+                  />
+                </div>
+                
+                {/* Password Strength Indicator */}
+                {(() => {
+                  const strength = getPasswordStrength(forgotNewPass);
+                  return (
+                    <div style={{ textAlign: 'left', margin: '4px 0' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', marginBottom: 4 }}>
+                        <span style={{ color: 'var(--color-text-muted)' }}>ระดับความปลอดภัย:</span>
+                        <span style={{ color: strength.color, fontWeight: 'bold' }}>{strength.label}</span>
+                      </div>
+                      <div style={{ width: '100%', height: '6px', background: 'rgba(0,0,0,0.1)', borderRadius: '3px', overflow: 'hidden' }}>
+                        <div style={{ width: strength.width, height: '100%', background: strength.color, transition: 'width 0.3s ease' }}></div>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+                  <button type="button" onClick={() => setForgotStep(0)} className="control-btn" style={{ flex: 1, justifyContent: 'center', height: '40px', background: 'rgba(0,0,0,0.05)', color: 'var(--color-text-main)', border: '1px solid var(--border-card)', fontSize: '0.85rem' }}>
+                    ยกเลิก
+                  </button>
+                  <button type="submit" className="control-btn" style={{ flex: 1, justifyContent: 'center', height: '40px', background: 'var(--color-accent)', color: 'white', border: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
+                    ตั้งรหัสผ่านใหม่
+                  </button>
+                </div>
+              </form>
+            )}
+
+            <button onClick={() => { setShowLoginModal(false); setForgotStep(0); setOtpError(''); }} style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', fontSize: '0.8rem', marginTop: 20, cursor: 'pointer', textDecoration: 'underline' }}>
               {t.guestMode}
             </button>
           </div>
