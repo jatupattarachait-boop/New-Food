@@ -701,24 +701,24 @@ export default function App() {
     const ctx = canvas.getContext('2d');
     const sections = getWheelItems();
     
-    ctx.clearRect(0, 0, 360, 360);
-    const radius = 160;
-    const center = 180;
+    ctx.clearRect(0, 0, 460, 460);
+    const radius = 210;
+    const center = 230;
     const arc = Math.PI * 2 / sections.length;
 
     sections.forEach((item, i) => {
       ctx.beginPath();
       ctx.arc(center, center, radius, i * arc, (i + 1) * arc);
       ctx.lineTo(center, center);
-      ctx.fillStyle = i % 2 === 0 ? (theme === 'light' ? '#8f9e8b' : '#c5a880') : (theme === 'light' ? '#fbf9f6' : '#232d24');
+      ctx.fillStyle = i % 2 === 0 ? '#d4af37' : (theme === 'light' ? '#ffffff' : '#1a1c1e');
       ctx.fill();
       ctx.lineWidth = 1;
-      ctx.strokeStyle = theme === 'light' ? 'rgba(143,158,139,0.15)' : 'rgba(255,255,255,0.08)';
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.25)';
       ctx.stroke();
 
       // เขียนตัวหนังสือลงในแถบวงล้อ
       ctx.save();
-      ctx.fillStyle = i % 2 === 0 ? (theme === 'light' ? '#ffffff' : '#1b231c') : (theme === 'light' ? '#2f3e2e' : '#f0eae1');
+      ctx.fillStyle = i % 2 === 0 ? (theme === 'light' ? '#ffffff' : '#121415') : (theme === 'light' ? '#1c1a17' : '#f5f2eb');
       ctx.translate(center, center);
       ctx.rotate(i * arc + arc / 2);
       ctx.font = 'bold 11px sans-serif';
@@ -1564,8 +1564,8 @@ export default function App() {
               <div className="wheel-pointer"></div>
               <canvas 
                 ref={canvasRef} 
-                width="360" 
-                height="360" 
+                width="460" 
+                height="460" 
                 className="wheel-canvas"
               />
               <div onClick={spinTheWheel} className="wheel-center-pin">

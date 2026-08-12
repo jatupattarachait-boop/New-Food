@@ -2,32 +2,32 @@
 
 :root {
   --font-main: 'Outfit', 'Kanit', sans-serif;
-  --bg-primary: #1b231c;
-  --bg-secondary: #232d24;
-  --bg-card: rgba(35, 45, 36, 0.7);
-  --border-card: rgba(240, 234, 225, 0.08);
-  --color-text-main: #f0eae1;
-  --color-text-muted: #a3aca0;
-  --color-accent: #c5a880;
-  --color-accent-hover: #d8bfa0;
-  --color-accent-glow: rgba(197, 168, 128, 0.12);
+  --bg-primary: #121415;
+  --bg-secondary: #1a1c1e;
+  --bg-card: rgba(30, 32, 34, 0.55);
+  --border-card: rgba(212, 175, 55, 0.15);
+  --color-text-main: #f5f2eb;
+  --color-text-muted: #a8a297;
+  --color-accent: #d4af37;
+  --color-accent-hover: #f3e5ab;
+  --color-accent-glow: rgba(212, 175, 55, 0.1);
   --color-success: #8eac50;
   --color-warning: #d58c73;
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --shadow-glow: 0 4px 24px rgba(197, 168, 128, 0.05);
+  --shadow-glow: 0 4px 24px rgba(212, 175, 55, 0.08);
 }
 
 .light-mode {
-  --bg-primary: #fbf9f6;
+  --bg-primary: #faf9f6;
   --bg-secondary: #ffffff;
-  --bg-card: rgba(255, 255, 255, 0.85);
-  --border-card: rgba(143, 158, 139, 0.15);
-  --color-text-main: #2f3e2e;
-  --color-text-muted: #707e6d;
-  --color-accent: #8f9e8b;
-  --color-accent-hover: #7f8d7c;
-  --color-accent-glow: rgba(143, 158, 139, 0.15);
-  --shadow-glow: 0 4px 24px rgba(143, 158, 139, 0.08);
+  --bg-card: rgba(255, 255, 255, 0.45);
+  --border-card: rgba(212, 175, 55, 0.22);
+  --color-text-main: #1c1a17;
+  --color-text-muted: #736e64;
+  --color-accent: #d4af37;
+  --color-accent-hover: #c59b27;
+  --color-accent-glow: rgba(212, 175, 55, 0.12);
+  --shadow-glow: 0 8px 32px rgba(212, 175, 55, 0.08);
 }
 
 
@@ -94,7 +94,7 @@ body {
 }
 
 .logo-icon {
-  background: linear-gradient(135deg, var(--color-accent), #ff4b2b);
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-hover));
   width: 42px;
   height: 42px;
   border-radius: 12px;
@@ -111,7 +111,7 @@ body {
   font-size: 1.5rem;
   font-weight: 800;
   letter-spacing: 1px;
-  background: linear-gradient(135deg, var(--color-accent), #ff855c);
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-hover));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -258,8 +258,8 @@ body {
 }
 
 .glass-card:hover {
-  border-color: rgba(255, 111, 60, 0.25);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  border-color: var(--color-accent);
+  box-shadow: 0 12px 40px var(--color-accent-glow);
 }
 
 /* Home Section Layouts */
@@ -392,6 +392,20 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-card);
+  border-radius: 16px;
+  padding: 16px;
+  transition: var(--transition-smooth);
+  cursor: pointer;
+}
+
+.recipe-card:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 8px 32px var(--color-accent-glow);
+  transform: translateY(-4px);
 }
 
 .recipe-card-img {
@@ -826,11 +840,11 @@ body {
 
 .wheel-frame {
   position: relative;
-  width: 360px;
-  height: 360px;
+  width: 460px;
+  height: 460px;
   border-radius: 50%;
-  border: 12px solid var(--bg-secondary);
-  box-shadow: 0 4px 30px var(--color-accent-glow), inset 0 0 20px rgba(0,0,0,0.4);
+  border: 16px solid var(--bg-secondary);
+  box-shadow: 0 10px 40px var(--color-accent-glow), inset 0 0 20px rgba(0,0,0,0.3);
   overflow: hidden;
   background-color: var(--bg-primary);
 }
@@ -858,7 +872,7 @@ body {
 
 .wheel-center-pin {
   position: absolute;
-  inset: 120px;
+  inset: 170px;
   background-color: var(--bg-secondary);
   border-radius: 50%;
   border: 4px solid var(--color-accent);
