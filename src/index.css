@@ -57,10 +57,15 @@
 }
 
 body {
-  background-color: var(--bg-primary);
+  background: radial-gradient(circle at 50% 50%, #171b1d 0%, #0a0c0d 100%);
   color: var(--color-text-main);
   overflow-x: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+}
+
+.light-mode body {
+  background: radial-gradient(circle at 50% 50%, #ffffff 0%, #f5f4f0 100%);
 }
 
 /* App Shell Layout */
@@ -73,8 +78,10 @@ body {
 /* Sidebar Styling (Desktop) */
 .sidebar {
   width: 280px;
-  background-color: var(--bg-secondary);
-  border-right: 1px solid var(--border-card);
+  background: rgba(18, 20, 21, 0.7);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border-right: 1px solid rgba(212, 175, 55, 0.15);
   display: flex;
   flex-direction: column;
   padding: 24px;
@@ -84,6 +91,13 @@ body {
   top: 0;
   z-index: 100;
   transition: var(--transition-smooth);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.2);
+}
+
+.light-mode .sidebar {
+  background: rgba(255, 255, 255, 0.7);
+  border-right: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 10px 0 30px rgba(212, 175, 55, 0.02);
 }
 
 .logo-section {
@@ -140,7 +154,8 @@ body {
 .nav-item:hover, .nav-item.active {
   color: var(--color-text-main);
   background-color: var(--color-accent-glow);
-  border-color: rgba(255, 111, 60, 0.2);
+  border-color: rgba(212, 175, 55, 0.25);
+  box-shadow: 0 4px 12px var(--color-accent-glow);
 }
 
 .nav-item.active {
@@ -171,9 +186,13 @@ body {
 }
 
 .header-title-section h1 {
-  font-size: 2.2rem;
-  font-weight: 800;
+  font-size: 2.4rem;
+  font-weight: 850;
   margin-bottom: 4px;
+  background: linear-gradient(135deg, var(--color-text-main) 30%, var(--color-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
 }
 
 .header-title-section p {
@@ -189,22 +208,44 @@ body {
 
 /* Custom Controls styling */
 .control-btn {
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-card);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border-card);
   color: var(--color-text-main);
-  padding: 10px 16px;
+  padding: 10px 18px;
   border-radius: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  font-weight: 500;
+  font-weight: 600;
   transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.control-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transition: 0.5s;
+}
+
+.control-btn:hover::after {
+  left: 100%;
 }
 
 .control-btn:hover {
-  background-color: var(--color-accent-glow);
+  background-color: var(--color-accent);
+  color: #121415 !important;
   border-color: var(--color-accent);
+  box-shadow: 0 6px 20px var(--color-accent-glow);
+  transform: translateY(-2px);
 }
 
 /* Dropdown styling */
@@ -293,8 +334,20 @@ body {
   height: 100%;
   cursor: pointer;
   flex-shrink: 0;
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-card);
+  border-radius: 16px;
+  padding: 16px;
+  transition: var(--transition-smooth);
 }
 
+.horizontal-recipe-card:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 8px 32px var(--color-accent-glow);
+  transform: translateY(-4px);
+}
 
 .featured-card {
   min-width: 320px;
@@ -305,6 +358,13 @@ body {
   position: relative;
   cursor: pointer;
   transition: var(--transition-smooth);
+  border: 1px solid var(--border-card);
+}
+
+.featured-card:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 10px 30px var(--color-accent-glow);
+  transform: translateY(-4px);
 }
 
 .featured-card img {
