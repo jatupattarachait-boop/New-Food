@@ -261,6 +261,55 @@ const FRIDGE_PRESETS = [
   { id: "i-coconut-milk", name: "กะทิสด (Coconut)", icon: "🥥" }
 ];
 
+const getIngredientIcon = (name) => {
+  const n = name.toLowerCase();
+  if (n.includes("egg") || n.includes("ไข่")) return "🥚";
+  if (n.includes("shrimp") || n.includes("กุ้ง")) return "🍤";
+  if (n.includes("tofu") || n.includes("เต้าหู้")) return "🧈";
+  if (n.includes("chicken") || n.includes("ไก่")) return "🍗";
+  if (n.includes("beef") || n.includes("เนื้อวัว")) return "🥩";
+  if (n.includes("pork") || n.includes("หมู")) return "🥓";
+  if (n.includes("salmon") || n.includes("แซลมอน")) return "🐟";
+  if (n.includes("tuna") || n.includes("ทูน่า")) return "🐟";
+  if (n.includes("spinach") || n.includes("ปวยเล้ง")) return "🥬";
+  if (n.includes("mushroom") || n.includes("เห็ด")) return "🍄";
+  if (n.includes("tomato") || n.includes("มะเขือเทศ")) return "🍅";
+  if (n.includes("mango") || n.includes("มะม่วง")) return "🥭";
+  if (n.includes("coconut") || n.includes("มะพร้าว") || n.includes("กะทิ")) return "🥥";
+  if (n.includes("flour") || n.includes("แป้ง")) return "🌾";
+  if (n.includes("sugar") || n.includes("น้ำตาล")) return "🍬";
+  if (n.includes("honey") || n.includes("น้ำผึ้ง")) return "🍯";
+  if (n.includes("olive oil") || n.includes("น้ำมัน")) return "🫗";
+  if (n.includes("rice") || n.includes("ข้าว")) return "🍚";
+  if (n.includes("noodle") || n.includes("เส้น")) return "🍜";
+  if (n.includes("onion") || n.includes("หอม")) return "🧅";
+  if (n.includes("garlic") || n.includes("กระเทียม")) return "🧄";
+  if (n.includes("potato") || n.includes("มันฝรั่ง")) return "🥔";
+  if (n.includes("carrot") || n.includes("แครอท")) return "🥕";
+  if (n.includes("broccoli") || n.includes("บล็อคโคลี่")) return "🥦";
+  if (n.includes("avocado") || n.includes("อะโวคาโด")) return "🥑";
+  if (n.includes("apple") || n.includes("แอปเปิ้ล")) return "🍎";
+  if (n.includes("banana") || n.includes("กล้วย")) return "🍌";
+  if (n.includes("strawberry") || n.includes("สตรอว์เบอร์รี")) return "🍓";
+  if (n.includes("lemon") || n.includes("เลมอน")) return "🍋";
+  if (n.includes("lime") || n.includes("มะนาว")) return "🍋";
+  if (n.includes("cabbage") || n.includes("กะหล่ำปลี")) return "🥬";
+  if (n.includes("cheese") || n.includes("ชีส")) return "🧀";
+  if (n.includes("butter") || n.includes("เนย")) return "🧈";
+  if (n.includes("yogurt") || n.includes("โยเกิร์ต")) return "🥛";
+  if (n.includes("milk") || n.includes("นม")) return "🥛";
+  if (n.includes("chocolate") || n.includes("ช็อกโกแลต")) return "🍫";
+  if (n.includes("pepper") || n.includes("พริก")) return "🌶️";
+  if (n.includes("salt") || n.includes("เกลือ")) return "🧂";
+  return "🍎";
+};
+
+const getRecipeImage = (imagePath) => {
+  if (!imagePath) return '/New-Food/Image/pad_thai.png';
+  if (imagePath.startsWith('/') || imagePath.startsWith('http')) return imagePath;
+  return `/New-Food/${imagePath}`;
+};
+
 export default function App() {
   const [theme, setTheme] = useState('light');
   
@@ -1565,7 +1614,7 @@ export default function App() {
               <div className="featured-carousel">
                 {recipesDb.slice(0, 4).map(recipe => (
                   <div key={recipe.id} className="featured-card" onClick={() => handleSelectRecipe(recipe)}>
-                    <img src={recipe.image} alt={recipe.name} />
+                    <img src={getRecipeImage(recipe.image)} alt={recipe.name} />
                     <div className="featured-overlay">
                       <span className="featured-tag">{recipe.cuisine}</span>
                       <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>{recipe.name}</h3>
@@ -1652,7 +1701,7 @@ export default function App() {
                         {cuisineRecipes.map(recipe => (
                           <div key={recipe.id} className="glass-card horizontal-recipe-card" onClick={() => handleSelectRecipe(recipe)}>
                             <div className="recipe-card-img">
-                              <img src={recipe.image} alt={recipe.name} />
+                              <img src={getRecipeImage(recipe.image)} alt={recipe.name} />
                               <span className="recipe-cuisine-tag">{recipe.cuisine}</span>
                             </div>
                             <div className="recipe-card-content">
@@ -1689,7 +1738,7 @@ export default function App() {
                 {filteredRecipes.map(recipe => (
                   <div key={recipe.id} className="glass-card recipe-card" onClick={() => handleSelectRecipe(recipe)} style={{ cursor: 'pointer' }}>
                     <div className="recipe-card-img">
-                      <img src={recipe.image} alt={recipe.name} />
+                      <img src={getRecipeImage(recipe.image)} alt={recipe.name} />
                       <span className="recipe-cuisine-tag">{recipe.cuisine}</span>
                     </div>
                     <div className="recipe-card-content">
@@ -1744,14 +1793,14 @@ export default function App() {
                       <span style={{ fontSize: '0.85rem', fontWeight: 500 }}>{preset.name}</span>
                     </div>
                   ))}
-                  {/* เจนวัตถุดิบสุ่มเพิ่มเติมอีกจำนวนหนึ่งเพื่อแสดงการมี 1,500 ชนิด */}
+                   {/* เจนวัตถุดิบสุ่มเพิ่มเติมอีกจำนวนหนึ่งเพื่อแสดงการมี 1,500 ชนิด */}
                   {ingredientsDb.slice(30, 60).map(ing => (
                     <div 
                       key={ing.id}
                       onClick={() => toggleFridgeSelection(ing.id)}
                       className={`ing-select-card ${fridgeSelected.includes(ing.id) ? 'selected' : ''}`}
                     >
-                      <div className="ing-select-icon">🍎</div>
+                      <div className="ing-select-icon">{getIngredientIcon(ing.name)}</div>
                       <span style={{ fontSize: '0.85rem', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100px' }}>
                         {ing.name.split(' (')[0]}
                       </span>
@@ -1771,7 +1820,7 @@ export default function App() {
                         const ing = ingredientsDb.find(i => i.id === id) || FRIDGE_PRESETS.find(p => p.id === id);
                         return (
                           <div key={id} className="selected-token">
-                            <span>{ing ? ing.name.split(' (')[0] : id}</span>
+                            <span>{ing ? `${getIngredientIcon(ing.name)} ${ing.name.split(' (')[0]}` : id}</span>
                             <span className="selected-token-remove" onClick={() => toggleFridgeSelection(id)}>×</span>
                           </div>
                         );
@@ -1888,7 +1937,7 @@ export default function App() {
                   {/* แสดงภาพอาหารเมื่อสุ่มได้เมนูอาหาร */}
                   {recipeObj && (
                     <div style={{ height: 160, borderRadius: 12, overflow: 'hidden', marginBottom: 20, border: '1px solid var(--border-card)' }}>
-                      <img src={recipeObj.image} alt={recipeObj.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <img src={getRecipeImage(recipeObj.image)} alt={recipeObj.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </div>
                   )}
 
@@ -1966,7 +2015,7 @@ export default function App() {
                   </div>
 
                   <div className="social-card-img" style={{ height: 200, borderRadius: 12, overflow: 'hidden', marginBottom: 12 }}>
-                    <img src={post.image} alt="Cooking post" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img src={getRecipeImage(post.image)} alt="Cooking post" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     {post.hasBadge && (
                       <span className="cooked-badge">
                         <Check size={12} /> {t.cookedBadge}
@@ -2249,7 +2298,7 @@ export default function App() {
             <div className="recipe-detail-layout">
               <div>
                 <div className="recipe-detail-hero">
-                  <img src={selectedRecipe.image} alt={selectedRecipe.name} />
+                  <img src={getRecipeImage(selectedRecipe.image)} alt={selectedRecipe.name} />
                   <div className="recipe-detail-title-overlay">
                     <span className="featured-tag">{selectedRecipe.cuisine}</span>
                     <h2 style={{ fontSize: '2rem', fontWeight: 800, color: 'white' }}>{selectedRecipe.name}</h2>
