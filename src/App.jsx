@@ -960,9 +960,9 @@ export default function App() {
       
       {/* 1. ล็อกอินโมดอลบังคับ (Authentication Screen) */}
       {showLoginModal && (
-        <div className="cooking-modal" style={{ display: 'flex', zIndex: 1001, background: 'linear-gradient(135deg, #07080b, #12141a)', justifyContent: 'center', alignItems: 'center' }}>
-          <div className="glass-card" style={{ maxWidth: '440px', width: '100%', padding: '30px 40px', textAlign: 'center', border: '1px solid rgba(255,111,60,0.15)', maxHeight: '95vh', overflowY: 'auto' }}>
-            <div className="logo-icon" style={{ margin: '0 auto 16px auto', width: '50px', height: '50px', borderRadius: '12px', fontSize: '1.6rem' }}>N</div>
+        <div className="cooking-modal" style={{ display: 'flex', zIndex: 1001, background: 'linear-gradient(135deg, #1b231c, #111812)', justifyContent: 'center', alignItems: 'center' }}>
+          <div className="glass-card" style={{ maxWidth: '440px', width: '100%', padding: '30px 40px', textAlign: 'center', border: '1px solid var(--border-card)', maxHeight: '95vh', overflowY: 'auto' }}>
+            <img src="/New-Food/nfood_lux_logo.png" alt="N.Food Logo" style={{ margin: '0 auto 16px auto', width: '70px', height: '70px', borderRadius: '16px', objectFit: 'cover', display: 'block' }} />
             <h2 style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: '4px', color: 'white' }}>{t.loginTitle}</h2>
             <p style={{ color: 'var(--color-text-muted)', marginBottom: '20px', fontSize: '0.85rem' }}>{t.loginSubtitle}</p>
             
@@ -1134,8 +1134,8 @@ export default function App() {
 
       {/* 2. เมนูด้านข้าง Sidebar (แสดงเฉพาะเดสก์ท็อป) */}
       <aside className="sidebar">
-        <div className="logo-section">
-          <div className="logo-icon">N</div>
+        <div className="logo-section" style={{ gap: '16px' }}>
+          <img src="/New-Food/nfood_lux_logo.png" alt="N.Food Logo" style={{ width: '42px', height: '42px', borderRadius: '10px', objectFit: 'cover' }} />
           <div>
             <span className="logo-text">N.Food</span>
             <div style={{ fontSize: '0.65rem', color: 'var(--color-accent)', letterSpacing: 2 }}>NEW FOOD</div>
