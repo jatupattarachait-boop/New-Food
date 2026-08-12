@@ -2,22 +2,6 @@
 
 :root {
   --font-main: 'Outfit', 'Kanit', sans-serif;
-  --bg-primary: #121415;
-  --bg-secondary: #1a1c1e;
-  --bg-card: rgba(30, 32, 34, 0.55);
-  --border-card: rgba(212, 175, 55, 0.15);
-  --color-text-main: #f5f2eb;
-  --color-text-muted: #a8a297;
-  --color-accent: #d4af37;
-  --color-accent-hover: #f3e5ab;
-  --color-accent-glow: rgba(212, 175, 55, 0.1);
-  --color-success: #8eac50;
-  --color-warning: #d58c73;
-  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --shadow-glow: 0 4px 24px rgba(212, 175, 55, 0.08);
-}
-
-.light-mode {
   --bg-primary: #faf9f6;
   --bg-secondary: #ffffff;
   --bg-card: rgba(255, 255, 255, 0.45);
@@ -27,7 +11,23 @@
   --color-accent: #d4af37;
   --color-accent-hover: #c59b27;
   --color-accent-glow: rgba(212, 175, 55, 0.12);
+  --color-success: #8eac50;
+  --color-warning: #d58c73;
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --shadow-glow: 0 8px 32px rgba(212, 175, 55, 0.08);
+}
+
+.dark-mode {
+  --bg-primary: #121415;
+  --bg-secondary: #1a1c1e;
+  --bg-card: rgba(30, 32, 34, 0.55);
+  --border-card: rgba(212, 175, 55, 0.15);
+  --color-text-main: #f5f2eb;
+  --color-text-muted: #a8a297;
+  --color-accent: #d4af37;
+  --color-accent-hover: #f3e5ab;
+  --color-accent-glow: rgba(212, 175, 55, 0.1);
+  --shadow-glow: 0 4px 24px rgba(212, 175, 55, 0.08);
 }
 
 
@@ -57,15 +57,15 @@
 }
 
 body {
-  background: radial-gradient(circle at 50% 50%, #171b1d 0%, #0a0c0d 100%);
+  background: radial-gradient(circle at 50% 50%, #ffffff 0%, #faf9f6 100%);
   color: var(--color-text-main);
   overflow-x: hidden;
   transition: background 0.3s ease, color 0.3s ease;
   min-height: 100vh;
 }
 
-.light-mode body {
-  background: radial-gradient(circle at 50% 50%, #ffffff 0%, #f5f4f0 100%);
+body:has(.dark-mode) {
+  background: radial-gradient(circle at 50% 50%, #171b1d 0%, #0a0c0d 100%);
 }
 
 /* App Shell Layout */
@@ -78,10 +78,10 @@ body {
 /* Sidebar Styling (Desktop) */
 .sidebar {
   width: 280px;
-  background: rgba(18, 20, 21, 0.7);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-  border-right: 1px solid rgba(212, 175, 55, 0.15);
+  border-right: 1px solid rgba(212, 175, 55, 0.2);
   display: flex;
   flex-direction: column;
   padding: 24px;
@@ -91,13 +91,13 @@ body {
   top: 0;
   z-index: 100;
   transition: var(--transition-smooth);
-  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 10px 0 30px rgba(212, 175, 55, 0.02);
 }
 
-.light-mode .sidebar {
-  background: rgba(255, 255, 255, 0.7);
-  border-right: 1px solid rgba(212, 175, 55, 0.2);
-  box-shadow: 10px 0 30px rgba(212, 175, 55, 0.02);
+.dark-mode .sidebar {
+  background: rgba(18, 20, 21, 0.7);
+  border-right: 1px solid rgba(212, 175, 55, 0.15);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.2);
 }
 
 .logo-section {

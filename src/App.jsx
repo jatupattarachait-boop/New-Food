@@ -262,7 +262,7 @@ const FRIDGE_PRESETS = [
 ];
 
 export default function App() {
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState('light');
   const [language, setLanguage] = useState('th');
   const [activeTab, setActiveTab] = useState(() => localStorage.getItem('nfood_active_tab') || 'home');
   const [showLangMenu, setShowLangMenu] = useState(false);
@@ -956,14 +956,14 @@ export default function App() {
   };
 
   return (
-    <div className={`app-container ${theme === 'light' ? 'light-mode' : ''} ${isRTL ? 'rtl-layout' : ''}`}>
+    <div className={`app-container ${theme === 'dark' ? 'dark-mode' : ''} ${isRTL ? 'rtl-layout' : ''}`}>
       
       {/* 1. ล็อกอินโมดอลบังคับ (Authentication Screen) */}
       {showLoginModal && (
-        <div className="cooking-modal" style={{ display: 'flex', zIndex: 1001, background: 'linear-gradient(135deg, #1b231c, #111812)', justifyContent: 'center', alignItems: 'center' }}>
+        <div className="cooking-modal" style={{ display: 'flex', zIndex: 1001, background: 'var(--bg-primary)', justifyContent: 'center', alignItems: 'center' }}>
           <div className="glass-card" style={{ maxWidth: '440px', width: '100%', padding: '30px 40px', textAlign: 'center', border: '1px solid var(--border-card)', maxHeight: '95vh', overflowY: 'auto' }}>
             <img src="/New-Food/nfood_lux_logo.png" alt="N.Food Logo" style={{ margin: '0 auto 16px auto', width: '70px', height: '70px', borderRadius: '16px', objectFit: 'cover', display: 'block' }} />
-            <h2 style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: '4px', color: 'white' }}>{t.loginTitle}</h2>
+            <h2 style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: '4px', color: 'var(--color-text-main)' }}>{t.loginTitle}</h2>
             <p style={{ color: 'var(--color-text-muted)', marginBottom: '20px', fontSize: '0.85rem' }}>{t.loginSubtitle}</p>
             
             {/* แท็บสลับหน้าจอ */}
@@ -995,7 +995,7 @@ export default function App() {
                       value={loginEmail}
                       onChange={(e) => setLoginEmail(e.target.value)}
                       className="form-input" 
-                      style={{ width: '100%', height: '40px', background: 'rgba(0,0,0,0.3)', color: 'white', fontSize: '0.85rem' }}
+                      style={{ width: '100%', height: '40px', fontSize: '0.85rem' }}
                       required
                     />
                   </div>
@@ -1006,7 +1006,7 @@ export default function App() {
                       value={loginPassword}
                       onChange={(e) => setLoginPassword(e.target.value)}
                       className="form-input" 
-                      style={{ width: '100%', height: '40px', background: 'rgba(0,0,0,0.3)', color: 'white', fontSize: '0.85rem' }}
+                      style={{ width: '100%', height: '40px', fontSize: '0.85rem' }}
                       required
                     />
                   </div>
@@ -1049,9 +1049,9 @@ export default function App() {
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="เบอร์โทรศัพท์มือถือ (08X-XXX-XXXX)" 
                       className="form-input" 
-                      style={{ width: '100%', height: '36px', border: '1px solid var(--border-card)', background: 'rgba(0,0,0,0.3)', color: 'white', fontSize: '0.8rem' }}
+                      style={{ width: '100%', height: '36px', fontSize: '0.8rem' }}
                     />
-                    <button type="submit" className="control-btn" style={{ justifyContent: 'center', height: '36px', background: 'rgba(255,255,255,0.05)', color: 'white', fontSize: '0.8rem' }}>
+                    <button type="submit" className="control-btn" style={{ justifyContent: 'center', height: '36px', fontSize: '0.8rem' }}>
                       {t.sendOtp}
                     </button>
                   </form>
@@ -1064,7 +1064,7 @@ export default function App() {
                       maxLength={6}
                       placeholder="กรอก OTP 6 หลัก (123456)" 
                       className="form-input" 
-                      style={{ width: '100%', height: '36px', border: '1px solid var(--border-card)', background: 'rgba(0,0,0,0.3)', color: 'white', textAlign: 'center', fontSize: '0.95rem', letterSpacing: 4 }}
+                      style={{ width: '100%', height: '36px', textAlign: 'center', fontSize: '0.95rem', letterSpacing: 4 }}
                     />
                     <button type="submit" className="control-btn" style={{ justifyContent: 'center', height: '36px', background: 'var(--color-accent)', color: 'white', border: 'none', fontSize: '0.8rem' }}>
                       {t.submit}
@@ -1082,7 +1082,7 @@ export default function App() {
                     value={regName}
                     onChange={(e) => setRegName(e.target.value)}
                     className="form-input" 
-                    style={{ width: '100%', height: '40px', background: 'rgba(0,0,0,0.3)', color: 'white', fontSize: '0.85rem' }}
+                    style={{ width: '100%', height: '40px', fontSize: '0.85rem' }}
                     required
                   />
                 </div>
@@ -1093,7 +1093,7 @@ export default function App() {
                     value={regEmail}
                     onChange={(e) => setRegEmail(e.target.value)}
                     className="form-input" 
-                    style={{ width: '100%', height: '40px', background: 'rgba(0,0,0,0.3)', color: 'white', fontSize: '0.85rem' }}
+                    style={{ width: '100%', height: '40px', fontSize: '0.85rem' }}
                     required
                   />
                 </div>
@@ -1104,7 +1104,7 @@ export default function App() {
                     value={regPassword}
                     onChange={(e) => setRegPassword(e.target.value)}
                     className="form-input" 
-                    style={{ width: '100%', height: '40px', background: 'rgba(0,0,0,0.3)', color: 'white', fontSize: '0.85rem' }}
+                    style={{ width: '100%', height: '40px', fontSize: '0.85rem' }}
                     required
                   />
                 </div>
@@ -1115,7 +1115,7 @@ export default function App() {
                     value={regConfirmPassword}
                     onChange={(e) => setRegConfirmPassword(e.target.value)}
                     className="form-input" 
-                    style={{ width: '100%', height: '40px', background: 'rgba(0,0,0,0.3)', color: 'white', fontSize: '0.85rem' }}
+                    style={{ width: '100%', height: '40px', fontSize: '0.85rem' }}
                     required
                   />
                 </div>
