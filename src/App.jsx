@@ -710,15 +710,15 @@ export default function App() {
       ctx.beginPath();
       ctx.arc(center, center, radius, i * arc, (i + 1) * arc);
       ctx.lineTo(center, center);
-      ctx.fillStyle = i % 2 === 0 ? '#ff6f3c' : '#1e293b';
+      ctx.fillStyle = i % 2 === 0 ? (theme === 'light' ? '#8f9e8b' : '#c5a880') : (theme === 'light' ? '#fbf9f6' : '#232d24');
       ctx.fill();
       ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.strokeStyle = theme === 'light' ? 'rgba(143,158,139,0.15)' : 'rgba(255,255,255,0.08)';
       ctx.stroke();
 
       // เขียนตัวหนังสือลงในแถบวงล้อ
       ctx.save();
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = i % 2 === 0 ? (theme === 'light' ? '#ffffff' : '#1b231c') : (theme === 'light' ? '#2f3e2e' : '#f0eae1');
       ctx.translate(center, center);
       ctx.rotate(i * arc + arc / 2);
       ctx.font = 'bold 11px sans-serif';
