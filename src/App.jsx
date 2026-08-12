@@ -69,7 +69,7 @@ const TRANSLATIONS = {
     enterOtp: "กรอกรหัส OTP 6 หลัก",
     submit: "ยืนยัน",
     alternativeIngTitle: "วัตถุดิบทดแทนแนะนำ:",
-    communityDraftTitle: "เสนอมูนูอาหารของคุณเข้าสู่คลังระบบ",
+    communityDraftTitle: "เสนอเมนูอาหารของคุณเข้าสู่คลังระบบ",
     reviewTitle: "แดชบอร์ดแอดมิน (รอการตรวจสอบ)",
     approve: "อนุมัติ",
     reject: "ปฏิเสธ",
