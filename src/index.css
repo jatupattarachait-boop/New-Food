@@ -2,19 +2,65 @@
 
 :root {
   --font-main: 'Outfit', 'Kanit', sans-serif;
-  --bg-primary: #faf9f6;
-  --bg-secondary: #ffffff;
-  --bg-card: rgba(255, 255, 255, 0.45);
+  
+  /* สีที่กำหนดสูตร (NEW FOOD) */
+  --color-bg-cream: #FDFBF7;      /* สีพื้นหลัง: ครีมอ่อน สบายตา */
+  --color-primary-green: #1B4332; /* สีหลัก: เขียวมรกตเข้ม */
+  --color-accent-gold: #D4AF37;   /* สีเน้น: สีทองแชมเปญ */
+  --color-text-dark: #2D3A35;     /* สีตัวหนังสือ: เทาอมเขียวเข้ม */
+  
+  /* ระบบ Design System */
+  --bg-primary: var(--color-bg-cream);
+  --bg-secondary: #FFFDF9;
+  --bg-card: rgba(255, 255, 255, 0.55);
   --border-card: rgba(212, 175, 55, 0.22);
-  --color-text-main: #1c1a17;
-  --color-text-muted: #736e64;
-  --color-accent: #d4af37;
-  --color-accent-hover: #c59b27;
+  --color-text-main: var(--color-text-dark);
+  --color-text-muted: #6B7C75;
+  --color-accent: var(--color-accent-gold);
+  --color-accent-hover: #C59B27;
+  --color-accent-text: var(--color-primary-green);   /* สีตัวอักษรบนพื้นสีทอง */
   --color-accent-glow: rgba(212, 175, 55, 0.12);
   --color-success: #8eac50;
   --color-warning: #d58c73;
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --shadow-glow: 0 8px 32px rgba(212, 175, 55, 0.08);
+  --shadow-glow: 0 8px 32px rgba(27, 67, 50, 0.05);
+}
+
+/* ========================================= */
+/* ❄️ ธีมฤดูหนาว (Winter Elegance) - ใช้เป็นค่าเริ่มต้น */
+/* ให้อารมณ์หรูหรา คลาสสิก อบอุ่นแบบตะวันตก */
+/* ========================================= */
+:root {
+  --color-bg-cream: #FDFBF7;      /* สีงาช้างคลาสสิก (Ivory) */
+  --color-primary-green: #1B4332; /* เขียวมรกตลึก (Deep Emerald) */
+  --color-accent-gold: #D4AF37;   /* ทองแชมเปญ (Champagne Gold) */
+  --color-text-dark: #2A3631;     /* เทาอมเขียวเข้มมาก */
+}
+
+body {
+  background-color: var(--color-bg-cream);
+  color: var(--color-text-dark);
+  transition: background-color 0.8s ease, color 0.8s ease; /* เปลี่ยนสีแบบสมูทและดูแพง */
+}
+
+/* ========================================= */
+/* ☀️ ธีมฤดูร้อน (Summer Resort Luxury) */
+/* ให้อารมณ์หรูหราแบบรีสอร์ตริมทะเล โปร่งสบายแต่ยังพรีเมียม */
+/* ========================================= */
+.theme-summer {
+  --color-bg-cream: #FAF6ED;      /* ครีมทรายอุ่นๆ (Warm Sand) สะท้อนแสงแดดอ่อนๆ */
+  --color-primary-green: #244C3A; /* เขียวใบปาล์มเข้ม (Tropical Dark Green) */
+  --color-accent-gold: #CFAB54;   /* ทองประกายแดด (Sunlit Gold) จะอบอุ่นขึ้นนิดนึง */
+}
+
+/* ========================================= */
+/* 🌧️ ธีมฤดูฝน (Monsoon Moody Elegance) */
+/* ให้อารมณ์หรูหราแบบสุขุม นุ่มลึก และโรแมนติก */
+/* ========================================= */
+.theme-rainy {
+  --color-bg-cream: #F2F4F3;      /* ครีมอมเทาไข่มุก (Pearl/Oyster) ให้อารมณ์เย็นและสงบ */
+  --color-primary-green: #183A2E; /* เขียวสนเข้มอมน้ำเงิน (Pine/Teal Green) */
+  --color-accent-gold: #BFA37E;   /* ทองแอนทีค (Antique Gold) ทองหม่นๆ ดูลึกลับและแพง */
 }
 
 .dark-mode {
@@ -26,6 +72,7 @@
   --color-text-muted: #a8a297;
   --color-accent: #d4af37;
   --color-accent-hover: #f3e5ab;
+  --color-accent-text: #121415;  /* สีตัวอักษรบนพื้นสีทองในดาร์กโหมด */
   --color-accent-glow: rgba(212, 175, 55, 0.1);
   --shadow-glow: 0 4px 24px rgba(212, 175, 55, 0.08);
 }
@@ -57,15 +104,44 @@
 }
 
 body {
-  background: radial-gradient(circle at 50% 50%, #ffffff 0%, #faf9f6 100%);
+  background: radial-gradient(circle at 50% 50%, #FFFFFF 0%, var(--color-bg-cream) 100%);
   color: var(--color-text-main);
-  overflow-x: hidden;
-  transition: background 0.3s ease, color 0.3s ease;
+  overflow-x: auto;
+  transition: background 0.8s ease, color 0.8s ease;
   min-height: 100vh;
 }
 
 body:has(.dark-mode) {
   background: radial-gradient(circle at 50% 50%, #171b1d 0%, #0a0c0d 100%);
+}
+
+/* Typography & Headings */
+h1 {
+  background: linear-gradient(135deg, var(--color-primary-green) 0%, var(--color-accent-gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+h2, h3, h4, h5, h6 {
+  color: var(--color-primary-green);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.dark-mode h1 {
+  background: linear-gradient(135deg, #FFFFFF 0%, var(--color-accent-gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode h6 {
+  color: var(--color-text-main);
 }
 
 /* App Shell Layout */
@@ -78,26 +154,38 @@ body:has(.dark-mode) {
 /* Sidebar Styling (Desktop) */
 .sidebar {
   width: 280px;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(27, 67, 50, 0.96); /* สีเขียวเข้มหรูหรา */
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-  border-right: 1px solid rgba(212, 175, 55, 0.2);
+  border-right: 1px solid rgba(212, 175, 55, 0.35); /* เส้นขอบทองคำ */
   display: flex;
   flex-direction: column;
-  padding: 24px;
+  padding: 32px 24px; /* เพิ่มพื้นที่โล่ง */
   position: fixed;
   height: 100vh;
   left: 0;
   top: 0;
   z-index: 100;
   transition: var(--transition-smooth);
-  box-shadow: 10px 0 30px rgba(212, 175, 55, 0.02);
+  box-shadow: 10px 0 40px rgba(27, 67, 50, 0.12);
+  
+  /* ตัวแปรสีภายใน Sidebar เพื่อให้อ่านง่าย */
+  --color-text-main: #FFFDF9;
+  --color-text-muted: #A3C9A8;
+  --bg-card: rgba(255, 255, 255, 0.08);
+  --border-card: rgba(212, 175, 55, 0.25);
 }
 
 .dark-mode .sidebar {
-  background: rgba(18, 20, 21, 0.7);
+  background: rgba(18, 20, 21, 0.85);
   border-right: 1px solid rgba(212, 175, 55, 0.15);
-  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3);
+  
+  /* คืนค่าเป็นปกติในดาร์กโหมด */
+  --color-text-main: #f5f2eb;
+  --color-text-muted: #a8a297;
+  --bg-card: rgba(30, 32, 34, 0.55);
+  --border-card: rgba(212, 175, 55, 0.15);
 }
 
 .logo-section {
@@ -172,7 +260,7 @@ body:has(.dark-mode) {
 .main-content {
   flex: 1;
   margin-left: 280px;
-  padding: 32px 40px;
+  padding: 48px 56px; /* เพิ่มความหรูหราด้วยการปล่อยพื้นที่ว่าง */
   min-height: 100vh;
   transition: var(--transition-smooth);
 }
@@ -189,10 +277,14 @@ body:has(.dark-mode) {
   font-size: 2.4rem;
   font-weight: 850;
   margin-bottom: 4px;
-  background: linear-gradient(135deg, var(--color-text-main) 30%, var(--color-accent) 100%);
+  background: linear-gradient(135deg, var(--color-primary-green) 40%, var(--color-accent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.02em;
+}
+
+.dark-mode .header-title-section h1 {
+  background: linear-gradient(135deg, var(--color-text-main) 40%, var(--color-accent) 100%);
 }
 
 .header-title-section p {
@@ -505,6 +597,11 @@ body:has(.dark-mode) {
   font-weight: 700;
   margin-bottom: 8px;
   line-height: 1.4;
+  color: var(--color-primary-green);
+}
+
+.dark-mode .recipe-card-title {
+  color: var(--color-text-main);
 }
 
 .recipe-stats {
@@ -898,65 +995,106 @@ body:has(.dark-mode) {
   gap: 30px;
 }
 
-.wheel-frame {
+/* ========================================= */
+/* 🎡 LUXURY SPINNING WHEEL STYLES */
+/* ========================================= */
+.wheel-wrapper {
   position: relative;
-  width: 460px;
-  height: 460px;
-  border-radius: 50%;
-  border: 16px solid var(--bg-secondary);
-  box-shadow: 0 10px 40px var(--color-accent-glow), inset 0 0 20px rgba(0,0,0,0.3);
-  overflow: hidden;
-  background-color: var(--bg-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px auto;
+  
+  width: 100%;          /* ให้กว้างยืดหยุ่นตามหน้าจอ */
+  max-width: 400px;     /* แต่กว้างสุดห้ามเกิน 400px */
+  aspect-ratio: 1 / 1;  /* 🎯 บังคับให้ความสูงเท่ากับความกว้างเป๊ะๆ เสมอ (เวทมนตร์อยู่ตรงนี้) */
+  flex-shrink: 0;       /* 🎯 ห้ามให้กล่องภายนอกมาบีบวงล้อให้เบี้ยว */
 }
 
-.wheel-canvas {
+/* 2. เพิ่ม box-sizing เพื่อไม่ให้เส้นขอบ (Border) ไปดันวงล้อให้บิดเบี้ยว */
+.luxury-wheel {
   width: 100%;
   height: 100%;
-  transition: transform 6s cubic-bezier(0.1, 0.8, 0.1, 1);
-  transform: rotate(0deg);
+  border-radius: 50%;
+  overflow: hidden;
+  box-sizing: border-box; /* 🎯 สำคัญมาก: คำนวณเส้นขอบทองให้อยู่ในพื้นที่วงกลม ไม่ล้นออกไปข้างนอก */
+  
+  border: 10px solid var(--color-accent-gold);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 
+              inset 0 0 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  transform: translateZ(0); /* 🎯 แก้บั๊ก WebKit/Safari ตัดขอบวงกลมไม่สมบูรณ์ */
+  transition: transform 5s cubic-bezier(0.2, 0.8, 0.1, 1);
 }
 
+/* ลูกศรชี้สีทองด้านบน */
 .wheel-pointer {
   position: absolute;
-  top: -15px;
+  top: -20px;
   left: 50%;
   transform: translateX(-50%);
   width: 0;
   height: 0;
-  border-left: 15px solid transparent;
-  border-right: 15px solid transparent;
-  border-top: 30px solid var(--color-accent);
-  filter: drop-shadow(0 4px 6px var(--color-accent-glow));
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 40px solid var(--color-accent-gold);
   z-index: 10;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
 }
 
-.wheel-center-pin {
+/* ปุ่มกดสุ่มตรงกลาง */
+.wheel-spin-btn {
   position: absolute;
-  inset: 170px;
-  background-color: var(--bg-secondary);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  border: 4px solid var(--color-accent);
+  background-color: var(--color-bg-cream);
+  border: 4px solid var(--color-accent-gold);
+  color: var(--color-accent-gold);
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 5;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.wheel-spin-btn:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  background-color: var(--color-accent-gold);
+  color: var(--color-bg-cream);
+}
+
+.wheel-spin-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* การจัดวางรูปภาพและข้อความในแต่ละช่อง */
+.wheel-slice-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%; /* ลากจากจุดศูนย์กลางไปจนสุดขอบ */
+  height: 40px;
+  margin-top: -20px; /* ดึงกลับครึ่งนึงเพื่อให้ความสูงอยู่กึ่งกลางพอดี */
+  transform-origin: 0% 50%; /* จุดหมุนอยู่ที่ซ้ายสุด (ตรงกลางวงล้อ) */
   display: flex;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--color-text-main);
-  font-weight: 800;
-  z-index: 5;
-  box-shadow: 0 0 15px rgba(0,0,0,0.5);
-  font-size: 1.1rem;
-  transition: var(--transition-smooth);
+  justify-content: flex-end; /* ดันเนื้อหาไปชิดขอบขวา (ขอบวงล้อ) */
+  padding-right: 25px; /* เว้นระยะห่างจากขอบวงล้อ */
+  font-weight: bold;
+  font-size: 14px;
+  box-sizing: border-box;
 }
 
-.wheel-center-pin:hover {
-  background-color: var(--color-accent);
-  color: white;
-  transform: scale(1.05);
-}
-
-.wheel-result-card {
-  text-align: center;
-  animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* เอฟเฟกต์เฟดตอนประกาศรางวัล */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Social and Recipe Creator Styling */
@@ -1040,6 +1178,241 @@ body:has(.dark-mode) {
   box-shadow: 0 0 8px var(--color-accent-glow);
 }
 
+/* Hero Section Styles */
+.hero-container {
+  background: linear-gradient(135deg, rgba(27, 67, 50, 0.05) 0%, rgba(212, 175, 55, 0.05) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: 24px;
+  padding: 48px;
+  margin-bottom: 48px;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 40px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(27, 67, 50, 0.03);
+}
+
+.dark-mode .hero-container {
+  background: linear-gradient(135deg, rgba(27, 67, 50, 0.15) 0%, rgba(212, 175, 55, 0.08) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.10);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 2;
+}
+
+.hero-badge {
+  background-color: rgba(27, 67, 50, 0.08);
+  border: 1px solid rgba(27, 67, 50, 0.15);
+  color: var(--color-primary-green);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  width: fit-content;
+  letter-spacing: 0.5px;
+}
+
+.dark-mode .hero-badge {
+  background-color: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  color: var(--color-accent);
+}
+
+.hero-title {
+  font-size: 2.8rem;
+  font-weight: 850;
+  line-height: 1.2;
+  margin: 0;
+  background: linear-gradient(135deg, var(--color-primary-green) 30%, var(--color-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
+}
+
+.dark-mode .hero-title {
+  background: linear-gradient(135deg, var(--color-text-main) 30%, var(--color-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-desc {
+  font-size: 1.05rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.hero-btn-primary {
+  background-color: var(--color-primary-green);
+  color: #FFFDF9;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 15px rgba(27, 67, 50, 0.2);
+}
+
+.hero-btn-primary:hover {
+  background-color: #124D3C;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(27, 67, 50, 0.3);
+}
+
+.dark-mode .hero-btn-primary {
+  background-color: var(--color-accent);
+  color: var(--color-accent-text);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+}
+
+.dark-mode .hero-btn-primary:hover {
+  background-color: var(--color-accent-hover);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+}
+
+.hero-btn-secondary {
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  color: var(--color-text-dark);
+  border: 1px solid var(--border-card);
+  padding: 12px 28px;
+  border-radius: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition-smooth);
+}
+
+.hero-btn-secondary:hover {
+  border-color: var(--color-accent);
+  background-color: var(--bg-secondary);
+  transform: translateY(-2px);
+}
+
+.dark-mode .hero-btn-secondary {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-main);
+}
+
+.hero-right {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-image-wrapper {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  border: 8px solid var(--bg-secondary);
+  box-shadow: 0 15px 40px rgba(27, 67, 50, 0.15);
+  overflow: hidden;
+  transition: var(--transition-smooth);
+  animation: float 6s ease-in-out infinite;
+}
+
+.dark-mode .hero-image-wrapper {
+  border-color: var(--bg-card);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.hero-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Floating Badges for Hero Section */
+.hero-floating-card {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  padding: 12px 18px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(27, 67, 50, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: var(--transition-smooth);
+  z-index: 3;
+}
+
+.dark-mode .hero-floating-card {
+  background: rgba(26, 28, 30, 0.85);
+  border-color: rgba(212, 175, 55, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.hero-floating-card:hover {
+  transform: scale(1.05);
+}
+
+.floating-card-1 {
+  bottom: 10px;
+  left: -20px;
+}
+
+.floating-card-2 {
+  top: 20px;
+  right: -20px;
+}
+
+.floating-card-icon {
+  background-color: var(--color-accent-glow);
+  color: var(--color-accent);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floating-card-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.floating-card-val {
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--color-text-main);
+  line-height: 1.2;
+}
+
+.floating-card-lbl {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
 /* RTL Layout Direction */
 .rtl-layout {
   direction: rtl;
@@ -1090,12 +1463,16 @@ body:has(.dark-mode) {
     left: 0;
     width: 100%;
     height: 70px;
-    background-color: var(--bg-secondary);
-    border-top: 1px solid var(--border-card);
+    background-color: rgba(27, 67, 50, 0.98); /* สีเขียวเข้มบนเมนูโมบายล์ */
+    border-top: 1px solid rgba(212, 175, 55, 0.3);
     z-index: 100;
     justify-content: space-around;
     align-items: center;
     padding: 0 10px;
+    
+    /* ตัวแปรสีสำหรับการแสดงผลภายใต้ bottom-nav */
+    --color-text-main: #FFFDF9;
+    --color-text-muted: #A3C9A8;
   }
   .bottom-nav-item {
     display: flex;
@@ -1108,9 +1485,219 @@ body:has(.dark-mode) {
     transition: var(--transition-smooth);
   }
   .bottom-nav-item.active {
-    color: var(--color-accent);
+    color: var(--color-accent) !important;
   }
   .refrigerator-container {
     grid-template-columns: 1fr;
   }
+}
+
+/* Metallic Shine Sweep Animation for Premium Buttons */
+.control-btn, .wheel-spin-btn {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, color 0.3s ease;
+}
+
+.control-btn::after, .wheel-spin-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  transition: left 0.6s ease-in-out;
+  pointer-events: none;
+}
+
+.control-btn:hover, .wheel-spin-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.25);
+}
+
+.control-btn:hover::after, .wheel-spin-btn:hover::after {
+  left: 150%;
+}
+
+/* ========================================= */
+/* 🎡 LUXURY WHEEL COMPLETE FIX STYLES */
+/* ========================================= */
+
+.wheel-main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* แผงควบคุม */
+.wheel-control-panel {
+  background-color: var(--color-bg-cream);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--color-accent-gold);
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.wheel-select, .wheel-input {
+  padding: 10px;
+  border: 1px solid var(--color-primary-green);
+  border-radius: 6px;
+  outline: none;
+  flex: 1;
+  background-color: #ffffff;
+}
+
+.wheel-add-btn {
+  background-color: var(--color-accent-gold);
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.wheel-tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.wheel-tag {
+  background-color: rgba(212, 175, 55, 0.15);
+  border: 1px solid var(--color-accent-gold);
+  color: var(--color-primary-green);
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.wheel-tag-remove {
+  cursor: pointer;
+  margin-left: 6px;
+  color: #ff4d4f;
+  font-weight: bold;
+}
+
+/* การ์ดผู้ชนะ */
+.wheel-winner-card {
+  text-align: center;
+  padding: 15px;
+  background-color: var(--color-bg-cream);
+  border: 2px solid var(--color-accent-gold);
+  border-radius: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.wheel-winner-img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--color-accent-gold);
+  margin-top: 8px;
+}
+
+/* 🎯 โครงสร้างวงล้อ - การันตีวงกลม 100% */
+.wheel-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  aspect-ratio: 1 / 1; /* บังคับให้เป็นจัตุรัสเสมอ */
+  margin: 20px auto;
+  box-sizing: border-box;
+}
+
+.luxury-wheel {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%; /* บังคับวงกลม */
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 8px solid var(--color-accent-gold);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 0 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  transition: transform 5s cubic-bezier(0.15, 0.85, 0.35, 1.0);
+}
+
+.wheel-pointer {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  border-top: 32px solid var(--color-accent-gold);
+  z-index: 10;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3));
+}
+
+.wheel-spin-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: var(--color-bg-cream);
+  border: 3px solid var(--color-accent-gold);
+  color: var(--color-accent-gold);
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 5;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+}
+
+.wheel-spin-btn:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+  background-color: var(--color-accent-gold);
+  color: var(--color-bg-cream);
+}
+
+/* จัดเนื้อหาภายในแต่ละช่อง */
+.wheel-slice-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 45%;
+  height: 30px;
+  transform-origin: 0% 0%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 13px;
+  font-weight: bold;
+  box-sizing: border-box;
+  padding-right: 10px;
+}
+
+.wheel-slice-img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 6px;
+  border: 1px solid var(--color-accent-gold);
 }

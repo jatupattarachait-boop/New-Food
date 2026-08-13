@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Compass, 
   Search, 
@@ -12,7 +12,6 @@ import {
   MessageSquare, 
   Share2, 
   Globe, 
-  Settings, 
   LogOut, 
   Bell, 
   Scale, 
@@ -22,11 +21,12 @@ import {
   Moon, 
   Sun,
   Camera,
-  Trash2,
-  Lock
+  Activity,
+  Utensils
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { generateIngredientsDatabase, generateFullRecipesDatabase } from './data/recipesData';
+import { generateIngredientsDatabase, generateFullRecipesDatabase, menuItems } from './data/recipesData';
+import LuxuryWheel from './LuxuryWheel';
 
 // คลังคำศัพท์คำแปลภาษาต่างๆ
 const TRANSLATIONS = {
@@ -70,7 +70,7 @@ const TRANSLATIONS = {
     submit: "ยืนยัน",
     alternativeIngTitle: "วัตถุดิบทดแทนแนะนำ:",
     communityDraftTitle: "เสนอเมนูอาหารของคุณเข้าสู่คลังระบบ",
-    reviewTitle: "แดชบอร์ดแอดมิน (รอการตรวจสอบ)",
+    reviewTitle: "แดชบอร์ด Chef Line-N.Food (รอการตรวจสอบ)",
     approve: "อนุมัติ",
     reject: "ปฏิเสธ",
     recipeName: "ชื่อเมนูอาหาร",
@@ -81,8 +81,9 @@ const TRANSLATIONS = {
     languageLabel: "เลือกภาษา",
     cookedBadge: "ทำแล้วนะ!",
     guestMode: "ข้ามเป็นผู้เยี่ยมชม",
-    adminBadge: "สิทธิ์แอดมิน",
-    voiceActive: "ระบบสั่งเสียงเปิดใช้งานแล้ว (พูด 'ถัดไป' หรือ 'กลับ')"
+    adminBadge: "Chef Line-N.Food",
+    voiceActive: "ระบบสั่งเสียงเปิดใช้งานแล้ว (พูด 'ถัดไป' หรือ 'กลับ')",
+    menuTab: "เมนูแนะนำ"
   },
   en: {
     welcome: "Welcome to N.Food",
@@ -124,7 +125,7 @@ const TRANSLATIONS = {
     submit: "Verify",
     alternativeIngTitle: "Recommended Substitutes:",
     communityDraftTitle: "Submit Your Recipe to Global Database",
-    reviewTitle: "Admin Moderation Dashboard",
+    reviewTitle: "Chef Line-N.Food Moderation Dashboard",
     approve: "Approve",
     reject: "Reject",
     recipeName: "Recipe Title",
@@ -135,8 +136,9 @@ const TRANSLATIONS = {
     languageLabel: "Language",
     cookedBadge: "Cooked This!",
     guestMode: "Continue as Guest",
-    adminBadge: "Admin Privilege",
-    voiceActive: "Voice Control Active (Say 'Next' or 'Back')"
+    adminBadge: "Chef Line-N.Food",
+    voiceActive: "Voice Control Active (Say 'Next' or 'Back')",
+    menuTab: "Recommended Menu"
   },
   jp: {
     welcome: "N.Food へようこそ",
@@ -178,18 +180,18 @@ const TRANSLATIONS = {
     submit: "確認",
     alternativeIngTitle: "代替材料の提案:",
     communityDraftTitle: "グローバルデータベースにレシピを提出",
-    reviewTitle: "管理者モデレーション",
+    reviewTitle: "Chef Line-N.Food モデレーション",
     approve: "承認",
     reject: "却下",
     recipeName: "レシピ名",
     stepsLabel: "調理工程",
     addStepBtn: "工程を追加",
     addIngBtn: "食材を追加",
-    ingredientsLabel: "材料と分量 (g / ml)",
+    ingredientsLabel: "材料และ分量 (g / ml)",
     languageLabel: "言語選択",
     cookedBadge: "作ったよ！",
     guestMode: "ゲストとして続行",
-    adminBadge: "管理者権限",
+    adminBadge: "Chef Line-N.Food",
     voiceActive: "音声操作有効（「次へ」または「戻る」と話してください）"
   },
   ar: {
@@ -232,7 +234,7 @@ const TRANSLATIONS = {
     submit: "تأكيد",
     alternativeIngTitle: "البدائل المقترحة للمكون:",
     communityDraftTitle: "اقتراح وصفة لإضافتها لقاعدة البيانات العالمية",
-    reviewTitle: "لوحة تحكم المشرف (مراجعة الوصفات)",
+    reviewTitle: "Chef Line-N.Food (مراجعة الوصفات)",
     approve: "موافقة",
     reject: "رفض",
     recipeName: "اسم الوصفة",
@@ -243,7 +245,7 @@ const TRANSLATIONS = {
     languageLabel: "اختر اللغة",
     cookedBadge: "طبختها!",
     guestMode: "متابعة كزائر",
-    adminBadge: "صلاحيات المشرف",
+    adminBadge: "Chef Line-N.Food",
     voiceActive: "التحكم الصوتي نشط (قل 'التالي' أو 'السابق')"
   }
 };
@@ -258,7 +260,13 @@ const FRIDGE_PRESETS = [
   { id: "i-mushroom-straw", name: "เห็ดฟาง (Mushroom)", icon: "🍄" },
   { id: "i-tomato", name: "มะเขือเทศ (Tomato)", icon: "🍅" },
   { id: "i-mango", name: "มะม่วงสุก (Mango)", icon: "🥭" },
-  { id: "i-coconut-milk", name: "กะทิสด (Coconut)", icon: "🥥" }
+  { id: "i-coconut-milk", name: "กะทิสด (Coconut)", icon: "🥥" },
+  { id: "i-rice-noodle", name: "เส้นเล็ก (Rice Noodles)", icon: "🍜" },
+  { id: "i-pancetta", name: "เบคอน (Bacon)", icon: "🥓" },
+  { id: "i-spaghetti", name: "เส้นพาสต้า (Spaghetti)", icon: "🍝" },
+  { id: "i-pecorino", name: "ชีสพาร์เมซาน (Parmesan)", icon: "🧀" },
+  { id: "i-garlic", name: "กระเทียม (Garlic)", icon: "🧄" },
+  { id: "i-onion", name: "หอมใหญ่ (Onion)", icon: "🧅" }
 ];
 
 const getIngredientIcon = (name) => {
@@ -324,6 +332,24 @@ export default function App() {
   const [language, setLanguage] = useState('th');
   const [activeTab, setActiveTab] = useState(() => localStorage.getItem('nfood_active_tab') || 'home');
   const [showLangMenu, setShowLangMenu] = useState(false);
+  const [showLogoModal, setShowLogoModal] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState('');
+
+  // ตรวจสอบฤดูกาลตามเดือนเมื่อเปิดใช้งานหน้าเว็บ
+  useEffect(() => {
+    const currentMonth = new Date().getMonth(); // มกราคม = 0, ธันวาคม = 11
+
+    // 0 = Jan, 1 = Feb, 10 = Nov, 11 = Dec -> ❄️ Winter (Default: currentTheme = '')
+    // 2 = Mar, 3 = Apr, 4 = May, 5 = Jun -> ☀️ Summer (.theme-summer)
+    // 6 = Jul, 7 = Aug, 8 = Sep, 9 = Oct -> 🌧️ Rainy (.theme-rainy)
+    if (currentMonth >= 2 && currentMonth <= 5) {
+      setCurrentTheme('theme-summer');
+    } else if (currentMonth >= 6 && currentMonth <= 9) {
+      setCurrentTheme('theme-rainy');
+    } else {
+      setCurrentTheme(''); // ธีมฤดูหนาว (Winter / Default)
+    }
+  }, []);
 
   // ฐานข้อมูล
   const [ingredientsDb, setIngredientsDb] = useState([]);
@@ -380,7 +406,7 @@ export default function App() {
     const existing = localStorage.getItem('nfood_accounts');
     if (!existing) {
       const defaultAccounts = [
-        { emailOrPhone: 'admin@nfood.com', password: '123456', name: 'คุณศิริชัย เลิศล้ำ', isAdmin: true }
+        { emailOrPhone: 'admin@nfood.com', password: '123456', name: 'Chef Line-N.Food', isAdmin: true }
       ];
       localStorage.setItem('nfood_accounts', JSON.stringify(defaultAccounts));
     }
@@ -401,12 +427,6 @@ export default function App() {
   const [fridgeSelected, setFridgeSelected] = useState([]);
 
   // ระบบวงล้อกิจกรรม
-  const [wheelType, setWheelType] = useState('food'); // food, ingredient
-  const [wheelResult, setWheelResult] = useState(null);
-  const [isSpinning, setIsSpinning] = useState(false);
-  const canvasRef = useRef(null);
-  const [spinCategory, setSpinCategory] = useState('All');
-  const wheelImageCache = useRef({});
 
   // ระบบโซเชียลคอมมูนิตี้
   const [socialFeed, setSocialFeed] = useState([
@@ -472,6 +492,7 @@ export default function App() {
       }, 9000);
     }
     return () => clearInterval(voiceTimer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [voiceActive, cookingStep]);
 
   // ตัวนับเวลาถอยหลังในขั้นตอน
@@ -632,7 +653,7 @@ export default function App() {
     if (updated) {
       localStorage.setItem('nfood_accounts', JSON.stringify(newAccounts));
     } else if (forgotInput === 'admin@nfood.com') {
-      const adminAcc = { emailOrPhone: 'admin@nfood.com', password: forgotNewPass, name: 'คุณศิริชัย เลิศล้ำ', isAdmin: true };
+      const adminAcc = { emailOrPhone: 'admin@nfood.com', password: forgotNewPass, name: 'Chef Line-N.Food', isAdmin: true };
       accounts.push(adminAcc);
       localStorage.setItem('nfood_accounts', JSON.stringify(accounts));
     }
@@ -651,8 +672,8 @@ export default function App() {
 
   // จำลองเข้าสู่ระบบ Google / Line
   const handleSocialLogin = (provider) => {
-    const name = provider === 'Google' ? 'คุณศิริชัย เลิศล้ำ' : (provider === 'Facebook' ? 'Chef Facebook-N.Food' : 'Chef Line-N.Food');
-    const isAdmin = provider === 'Google'; // ให้เข้าแบบแอดมินเพื่อแสดงหน้าตรวจสอบสูตร
+    const name = provider === 'Google' ? 'Chef Line-N.Food' : (provider === 'Facebook' ? 'Chef Facebook-N.Food' : 'Chef Line-N.Food');
+    const isAdmin = provider === 'Google'; // ให้เข้าแบบ Chef Line-N.Food เพื่อแสดงหน้าตรวจสอบสูตร
     const userInfo = { name, provider, isAdmin };
     setUser(userInfo);
     localStorage.setItem('nfood_user', JSON.stringify(userInfo));
@@ -844,156 +865,7 @@ export default function App() {
     .sort((a, b) => b.matchPercent - a.matchPercent);
   };
 
-  // ระบบกิจกรรมวงล้อหมุน (Canvas Drawing & Animation)
-  useEffect(() => {
-    if (activeTab === 'wheel' && canvasRef.current) {
-      drawWheel();
-    }
-  }, [activeTab, wheelType, spinCategory]);
 
-  // พรีโหลดรูปภาพสำหรับวาดบนวงล้อสุ่มอาหาร
-  useEffect(() => {
-    recipesDb.forEach(r => {
-      if (r.image && !wheelImageCache.current[r.image]) {
-        const img = new Image();
-        img.src = r.image;
-        wheelImageCache.current[r.image] = img;
-        img.onload = () => {
-          if (activeTab === 'wheel') {
-            drawWheel();
-          }
-        };
-      }
-    });
-  }, [recipesDb, activeTab]);
-
-  const drawWheel = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const sections = getWheelItems();
-    
-    ctx.clearRect(0, 0, 460, 460);
-    const radius = 210;
-    const center = 230;
-    const arc = Math.PI * 2 / sections.length;
-
-    sections.forEach((item, i) => {
-      ctx.beginPath();
-      ctx.arc(center, center, radius, i * arc, (i + 1) * arc);
-      ctx.lineTo(center, center);
-      ctx.fillStyle = i % 2 === 0 ? '#d4af37' : (theme === 'light' ? '#ffffff' : '#1a1c1e');
-      ctx.fill();
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(212, 175, 55, 0.25)';
-      ctx.stroke();
-
-      // เขียนตัวหนังสือลงในแถบวงล้อ
-      ctx.save();
-      ctx.fillStyle = i % 2 === 0 ? (theme === 'light' ? '#ffffff' : '#121415') : (theme === 'light' ? '#1c1a17' : '#f5f2eb');
-      ctx.translate(center, center);
-      ctx.rotate(i * arc + arc / 2);
-      ctx.font = 'bold 11px sans-serif';
-      ctx.textAlign = 'right';
-      const displayName = item.name.length > 15 ? item.name.slice(0, 13) + '..' : item.name;
-      ctx.fillText(displayName, radius - 45, 5);
-
-      // วาดรูปภาพประกอบเมนูบนวงล้อ (เป็นวงกลมย่อเล็กข้างๆ ชื่อ)
-      if (item.image) {
-        const cachedImg = wheelImageCache.current[item.image];
-        if (cachedImg && cachedImg.complete) {
-          ctx.save();
-          ctx.beginPath();
-          ctx.arc(radius - 22, 0, 14, 0, Math.PI * 2);
-          ctx.clip();
-          ctx.drawImage(cachedImg, radius - 36, -14, 28, 28);
-          ctx.restore();
-        } else {
-          // โหลดสดและวาด
-          const img = new Image();
-          img.src = item.image;
-          img.onload = () => {
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(radius - 22, 0, 14, 0, Math.PI * 2);
-            ctx.clip();
-            ctx.drawImage(img, radius - 36, -14, 28, 28);
-            ctx.restore();
-          };
-        }
-      }
-      ctx.restore();
-    });
-  };
-
-  const getWheelItems = () => {
-    if (wheelType === 'food') {
-      const source = recipesDb.filter(r => spinCategory === 'All' || r.cuisine === spinCategory);
-      if (source.length < 2) {
-        return [
-          { name: "ผัดไทยกุ้งสด", image: "Image/pad_thai.png" },
-          { name: "ข้าวเหนียวมะม่วง", image: "Image/mango_sticky_rice.png" },
-          { name: "ราเมนซุปกระดูกหมู", image: "Image/ramen.png" },
-          { name: "พิซซ่ามาเกริต้า", image: "Image/pizza_margherita.png" },
-          { name: "ต้มยำกุ้ง", image: "Image/tom_yum.png" },
-          { name: "ทีรามิสุ", image: "Image/tiramisu.png" },
-          { name: "สปาเก็ตตี้คาร์โบนาร่า", image: "Image/carbonara.png" },
-          { name: "ไดฟูกุสตรอว์เบอร์รี", image: "Image/daifuku.png" }
-        ];
-      }
-      return source.slice(0, 12).map(r => ({
-        name: r.name.split(' (')[0],
-        image: r.image
-      }));
-    } else {
-      // สุ่มชื่อวัตถุดิบ 8 รายการ
-      const defaultImgs = [
-        "https://cdn-icons-png.flaticon.com/512/1041/1041373.png", // chicken
-        "https://cdn-icons-png.flaticon.com/512/1041/1041375.png", // pork
-        "https://cdn-icons-png.flaticon.com/512/1041/1041377.png", // beef
-        "https://cdn-icons-png.flaticon.com/512/1041/1041379.png", // fish
-        "https://cdn-icons-png.flaticon.com/512/2909/2909772.png", // egg
-        "https://cdn-icons-png.flaticon.com/512/1041/1041381.png", // onion
-        "https://cdn-icons-png.flaticon.com/512/1041/1041383.png", // garlic
-        "https://cdn-icons-png.flaticon.com/512/1041/1041385.png"  // chili
-      ];
-      return ingredientsDb.slice(0, 8).map((i, idx) => ({
-        name: i.name.split(' (')[0],
-        image: defaultImgs[idx % defaultImgs.length]
-      }));
-    }
-  };
-
-  const spinTheWheel = () => {
-    if (isSpinning) return;
-    setIsSpinning(true);
-    setWheelResult(null);
-    
-    const items = getWheelItems();
-    const randDegrees = 3600 + Math.floor(Math.random() * 360); // หมุน 10 รอบขึ้นไป
-    const itemIndex = Math.floor(((360 - (randDegrees % 360)) / (360 / items.length)));
-    
-    // อนิเมชันการหมุนโดยค่อยๆ ชะลอความเร็ว
-    const canvas = canvasRef.current;
-    canvas.style.transition = 'transform 5s cubic-bezier(0.15, 0.9, 0.15, 1)';
-    canvas.style.transform = `rotate(${randDegrees}deg)`;
-    
-    setTimeout(() => {
-      setIsSpinning(false);
-      const landedItem = items[itemIndex];
-      setWheelResult(landedItem.name);
-      
-      confetti({
-        particleCount: 150,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
-      
-      // ล้างสไตล์ rotation เพื่อให้กลับมาหมุนใหม่ได้ในครั้งหน้าแบบต่อเนื่อง
-      canvas.style.transition = 'none';
-      canvas.style.transform = `rotate(${randDegrees % 360}deg)`;
-    }, 5000);
-  };
 
   // โพสต์และถูกใจของชุมชน
   const handleLikePost = (postId) => {
@@ -1128,13 +1000,21 @@ export default function App() {
   };
 
   return (
-    <div className={`app-container ${theme === 'dark' ? 'dark-mode' : ''} ${isRTL ? 'rtl-layout' : ''}`}>
+    <div className={`app-container ${theme === 'dark' ? 'dark-mode' : ''} ${isRTL ? 'rtl-layout' : ''} ${currentTheme}`}>
       
       {/* 1. ล็อกอินโมดอลบังคับ (Authentication Screen) */}
       {showLoginModal && (
         <div className="cooking-modal" style={{ display: 'flex', zIndex: 1001, background: 'var(--bg-primary)', justifyContent: 'center', alignItems: 'center' }}>
           <div className="glass-card" style={{ maxWidth: '440px', width: '100%', padding: '30px 40px', textAlign: 'center', border: '1px solid var(--border-card)', maxHeight: '95vh', overflowY: 'auto' }}>
-            <img src="/New-Food/nfood_lux_logo.png" alt="N.Food Logo" style={{ margin: '0 auto 16px auto', width: '70px', height: '70px', borderRadius: '16px', objectFit: 'cover', display: 'block' }} />
+            <img 
+              src="/New-Food/nfood_lux_logo.png" 
+              alt="N.Food Logo" 
+              onClick={() => setShowLogoModal(true)}
+              style={{ margin: '0 auto 16px auto', width: '70px', height: '70px', borderRadius: '16px', objectFit: 'cover', display: 'block', cursor: 'pointer', transition: 'transform 0.2s' }} 
+              onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+              onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+              title="คลิกเพื่อดูโลโก้แบรนด์"
+            />
             <h2 style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: '4px', color: 'var(--color-text-main)' }}>{t.loginTitle}</h2>
             <p style={{ color: 'var(--color-text-muted)', marginBottom: '20px', fontSize: '0.85rem' }}>{t.loginSubtitle}</p>
             
@@ -1189,7 +1069,7 @@ export default function App() {
                       ลืมรหัสผ่าน? (Forgot Password?)
                     </button>
                   </div>
-                  <button type="submit" className="control-btn" style={{ justifyContent: 'center', height: '40px', background: 'var(--color-accent)', color: 'white', border: 'none', fontSize: '0.9rem', fontWeight: 600 }}>
+                  <button type="submit" className="control-btn" style={{ justifyContent: 'center', height: '40px', background: 'var(--color-accent)', color: 'var(--color-accent-text)', border: 'none', fontSize: '0.9rem', fontWeight: 600 }}>
                     ลงชื่อเข้าใช้งาน
                   </button>
                 </form>
@@ -1245,7 +1125,7 @@ export default function App() {
                       className="form-input" 
                       style={{ width: '100%', height: '36px', textAlign: 'center', fontSize: '0.95rem', letterSpacing: 4 }}
                     />
-                    <button type="submit" className="control-btn" style={{ justifyContent: 'center', height: '36px', background: 'var(--color-accent)', color: 'white', border: 'none', fontSize: '0.8rem' }}>
+                    <button type="submit" className="control-btn" style={{ justifyContent: 'center', height: '36px', background: 'var(--color-accent)', color: 'var(--color-accent-text)', border: 'none', fontSize: '0.8rem' }}>
                       {t.submit}
                     </button>
                   </form>
@@ -1345,7 +1225,7 @@ export default function App() {
                   </label>
                 </div>
 
-                <button type="submit" className="control-btn" style={{ justifyContent: 'center', height: '44px', background: 'var(--color-accent)', color: 'white', border: 'none', fontSize: '0.9rem', fontWeight: 'bold', marginTop: 10 }}>
+                <button type="submit" className="control-btn" style={{ justifyContent: 'center', height: '44px', background: 'var(--color-accent)', color: 'var(--color-accent-text)', border: 'none', fontSize: '0.9rem', fontWeight: 'bold', marginTop: 10 }}>
                   ลงทะเบียนสมาชิกใหม่
                 </button>
               </form>
@@ -1370,7 +1250,7 @@ export default function App() {
                   <button type="button" onClick={() => setForgotStep(0)} className="control-btn" style={{ flex: 1, justifyContent: 'center', height: '40px', background: 'rgba(0,0,0,0.05)', color: 'var(--color-text-main)', border: '1px solid var(--border-card)', fontSize: '0.85rem' }}>
                     ยกเลิก
                   </button>
-                  <button type="submit" className="control-btn" style={{ flex: 1, justifyContent: 'center', height: '40px', background: 'var(--color-accent)', color: 'white', border: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
+                  <button type="submit" className="control-btn" style={{ flex: 1, justifyContent: 'center', height: '40px', background: 'var(--color-accent)', color: 'var(--color-accent-text)', border: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
                     ส่งรหัส OTP
                   </button>
                 </div>
@@ -1415,7 +1295,7 @@ export default function App() {
                   <button type="button" onClick={() => setForgotStep(1)} className="control-btn" style={{ flex: 1, justifyContent: 'center', height: '40px', background: 'rgba(0,0,0,0.05)', color: 'var(--color-text-main)', border: '1px solid var(--border-card)', fontSize: '0.85rem' }}>
                     ย้อนกลับ
                   </button>
-                  <button type="submit" className="control-btn" style={{ flex: 1, justifyContent: 'center', height: '40px', background: 'var(--color-accent)', color: 'white', border: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
+                  <button type="submit" className="control-btn" style={{ flex: 1, justifyContent: 'center', height: '40px', background: 'var(--color-accent)', color: 'var(--color-accent-text)', border: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
                     ยืนยันรหัส OTP
                   </button>
                 </div>
@@ -1469,7 +1349,7 @@ export default function App() {
                   <button type="button" onClick={() => setForgotStep(0)} className="control-btn" style={{ flex: 1, justifyContent: 'center', height: '40px', background: 'rgba(0,0,0,0.05)', color: 'var(--color-text-main)', border: '1px solid var(--border-card)', fontSize: '0.85rem' }}>
                     ยกเลิก
                   </button>
-                  <button type="submit" className="control-btn" style={{ flex: 1, justifyContent: 'center', height: '40px', background: 'var(--color-accent)', color: 'white', border: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
+                  <button type="submit" className="control-btn" style={{ flex: 1, justifyContent: 'center', height: '40px', background: 'var(--color-accent)', color: 'var(--color-accent-text)', border: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
                     ตั้งรหัสผ่านใหม่
                   </button>
                 </div>
@@ -1486,8 +1366,16 @@ export default function App() {
       {/* 2. เมนูด้านข้าง Sidebar (แสดงเฉพาะเดสก์ท็อป) */}
       <aside className="sidebar">
         <div className="logo-section" style={{ gap: '16px' }}>
-          <img src="/New-Food/nfood_lux_logo.png" alt="N.Food Logo" style={{ width: '42px', height: '42px', borderRadius: '10px', objectFit: 'cover' }} />
-          <div>
+          <img 
+            src="/New-Food/nfood_lux_logo.png" 
+            alt="N.Food Logo" 
+            onClick={() => setShowLogoModal(true)}
+            style={{ width: '42px', height: '42px', borderRadius: '10px', objectFit: 'cover', cursor: 'pointer', transition: 'transform 0.2s' }} 
+            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+            onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            title="คลิกเพื่อดูโลโก้แบรนด์"
+          />
+          <div onClick={() => { setActiveTab('home'); setSelectedRecipe(null); }} style={{ cursor: 'pointer' }} title="กลับสู่หน้าแรก">
             <span className="logo-text">N.Food</span>
             <div style={{ fontSize: '0.65rem', color: 'var(--color-accent)', letterSpacing: 2 }}>NEW FOOD</div>
           </div>
@@ -1497,6 +1385,10 @@ export default function App() {
           <div className={`nav-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => { setActiveTab('home'); setSelectedRecipe(null); }}>
             <Compass size={20} />
             <span>ค้นหาสูตรอาหาร</span>
+          </div>
+          <div className={`nav-item ${activeTab === 'menu' ? 'active' : ''}`} onClick={() => { setActiveTab('menu'); setSelectedRecipe(null); }}>
+            <Utensils size={20} />
+            <span>{t.menuTab}</span>
           </div>
           <div className={`nav-item ${activeTab === 'fridge' ? 'active' : ''}`} onClick={() => { setActiveTab('fridge'); setSelectedRecipe(null); }}>
             <Scale size={20} />
@@ -1522,7 +1414,7 @@ export default function App() {
           {user ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <div style={{ width: 36, height: 36, borderRadius: '50%', backgroundColor: 'var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold' }}>
+                <div style={{ width: 36, height: 36, borderRadius: '50%', backgroundColor: 'var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-accent-text)', fontWeight: 'bold' }}>
                   {user.name[0]}
                 </div>
                 <div>
@@ -1547,6 +1439,10 @@ export default function App() {
         <div className={`bottom-nav-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => { setActiveTab('home'); setSelectedRecipe(null); }}>
           <Compass size={22} />
           <span>สำรวจ</span>
+        </div>
+        <div className={`bottom-nav-item ${activeTab === 'menu' ? 'active' : ''}`} onClick={() => { setActiveTab('menu'); setSelectedRecipe(null); }}>
+          <Utensils size={22} />
+          <span>{t.menuTab}</span>
         </div>
         <div className={`bottom-nav-item ${activeTab === 'fridge' ? 'active' : ''}`} onClick={() => { setActiveTab('fridge'); setSelectedRecipe(null); }}>
           <Scale size={22} />
@@ -1609,6 +1505,56 @@ export default function App() {
         {/* แท็บหน้าระบบ: 1. หน้าแรกสำรวจสูตรอาหาร */}
         {activeTab === 'home' && (
           <div>
+            {/* ส่วนแนะนำและต้อนรับ Hero Section โดดเด่นระดับพรีเมียม */}
+            <div className="hero-container">
+              <div className="hero-left">
+                <span className="hero-badge">✨ NEW CULINARY EXPERIENCE</span>
+                <h1 className="hero-title" style={{ color: 'inherit' }}>รังสรรค์เมนูสุขภาพ<br />ระดับพรีเมียมด้วยตัวคุณเอง</h1>
+                <p className="hero-desc">
+                  ค้นพบสูตรอาหารไทยและนานาชาติมากกว่า 1,000 เมนู พร้อมระบบสแกนวัตถุดิบตู้เย็นอัจฉริยะ 
+                  และคำนวณคุณค่าทางโภชนาการ (Calories & Macros) แบบ Real-time ตามจำนวนจานเสิร์ฟจริง
+                </p>
+                <div className="hero-actions">
+                  <button onClick={() => setActiveTab('fridge')} className="hero-btn-primary">
+                    <Scale size={18} /> ปรุงอาหารจากตู้เย็น
+                  </button>
+                  <button 
+                    onClick={() => {
+                      const el = document.getElementById('search-filter-section');
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }} 
+                    className="hero-btn-secondary"
+                  >
+                    <Compass size={18} /> สำรวจสูตรอาหารทั้งหมด
+                  </button>
+                </div>
+              </div>
+              <div className="hero-right">
+                <div className="hero-image-wrapper">
+                  <img src="/New-Food/Image/tom_yum.png" alt="Featured Gourmet Dish" />
+                </div>
+                {/* การ์ดสถิติลอยน้ำ */}
+                <div className="hero-floating-card floating-card-1">
+                  <div className="floating-card-icon">
+                    <ChefHat size={16} />
+                  </div>
+                  <div className="floating-card-text">
+                    <span className="floating-card-val">1,000+</span>
+                    <span className="floating-card-lbl">สูตรคาว & หวาน</span>
+                  </div>
+                </div>
+                <div className="hero-floating-card floating-card-2">
+                  <div className="floating-card-icon">
+                    <Activity size={16} />
+                  </div>
+                  <div className="floating-card-text">
+                    <span className="floating-card-val">Real-time</span>
+                    <span className="floating-card-lbl">คำนวณโภชนาการ</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className="home-featured">
               <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: 16 }}>เมนูอาหารยอดนิยมแนะนำ</h2>
               <div className="featured-carousel">
@@ -1626,7 +1572,7 @@ export default function App() {
             </div>
 
             {/* แผงฟิลเตอร์กรองข้อมูลสูตร 300 เมนู */}
-            <div className="glass-card" style={{ marginBottom: 32 }}>
+            <div id="search-filter-section" className="glass-card" style={{ marginBottom: 32 }}>
               <div style={{ display: 'flex', gap: 12, marginBottom: 20 }}>
                 <div style={{ position: 'relative', flex: 1 }}>
                   <Search style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)' }} size={18} />
@@ -1870,121 +1816,14 @@ export default function App() {
 
         {/* แท็บหน้าระบบ: 3. วงล้อสุ่มกิจกรรม (Spinning Wheels) */}
         {activeTab === 'wheel' && (
-          <div className="wheel-tab-content">
-            <div className="glass-card" style={{ width: '100%', maxWidth: '600px', textAlign: 'center' }}>
-              <h2 style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: 8 }}><Dices style={{ inlineSize: 24, verticalAlign: 'middle', marginRight: 8 }} /> {t.spinTitle}</h2>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem' }}>{t.spinSubtitle}</p>
+          <div className="wheel-tab-content" style={{ padding: '20px 0', textAlign: 'center', width: '100%', maxWidth: '600px', margin: '0 auto' }}>
+            <div className="glass-card" style={{ width: '100%', padding: '40px', textAlign: 'center' }}>
+              <h2 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--color-primary-green)', marginBottom: 8 }}>Lucky Draw</h2>
+              <p style={{ color: 'var(--color-text-muted)', fontSize: '1rem', marginBottom: 24 }}>ลุ้นรับสิทธิพิเศษและรางวัลประจำฤดูกาล</p>
               
-              {/* เลือกประเภทวงล้อ */}
-              <div style={{ display: 'flex', justifyContent: 'center', gap: 16, margin: '24px 0' }}>
-                <button 
-                  onClick={() => { setWheelType('food'); setWheelResult(null); }} 
-                  className={`control-btn ${wheelType === 'food' ? 'active' : ''}`}
-                  style={{ background: wheelType === 'food' ? 'var(--color-accent)' : '', color: wheelType === 'food' ? 'white' : '' }}
-                >
-                  {t.spinFood}
-                </button>
-                <button 
-                  onClick={() => { setWheelType('ingredient'); setWheelResult(null); }} 
-                  className={`control-btn ${wheelType === 'ingredient' ? 'active' : ''}`}
-                  style={{ background: wheelType === 'ingredient' ? 'var(--color-accent)' : '', color: wheelType === 'ingredient' ? 'white' : '' }}
-                >
-                  {t.spinIng}
-                </button>
-              </div>
-
-              {/* กรองหมวดหมู่ที่จะสุ่ม (เฉพาะของสุ่มอาหาร) */}
-              {wheelType === 'food' && (
-                <div style={{ display: 'flex', justifyContent: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 20 }}>
-                  {["All", "Thai", "Japanese", "Italian", "Indian", "French"].map(cat => (
-                    <button 
-                      key={cat} 
-                      onClick={() => { setSpinCategory(cat); setWheelResult(null); }}
-                      className={`filter-chip ${spinCategory === cat ? 'active' : ''}`}
-                      style={{ padding: '4px 10px', fontSize: '0.75rem' }}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
-              )}
+              {/* เรียกใช้วงล้อตรงนี้ */}
+              <LuxuryWheel />
             </div>
-
-            {/* โครงสร้างวงล้อ Canvas */}
-            <div className="wheel-frame">
-              <div className="wheel-pointer"></div>
-              <canvas 
-                ref={canvasRef} 
-                width="460" 
-                height="460" 
-                className="wheel-canvas"
-              />
-              <div onClick={spinTheWheel} className="wheel-center-pin">
-                {isSpinning ? 'SPINNING' : t.spinBtn}
-              </div>
-            </div>
-
-            {/* การแสดงผลลัพธ์วงล้อ */}
-            {wheelResult && (() => {
-              const recipeObj = wheelType === 'food' ? recipesDb.find(r => r.name.startsWith(wheelResult) || wheelResult.startsWith(r.name.split(' (')[0])) : null;
-              return (
-                <div className="glass-card wheel-result-card" style={{ width: '100%', maxWidth: '400px', textAlign: 'center', marginTop: 20 }}>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--color-accent)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: 1.5 }}>
-                    ยินดีด้วย! คุณสุ่มได้
-                  </span>
-                  <h3 style={{ fontSize: '1.6rem', fontWeight: 800, margin: '8px 0 16px 0' }}>{wheelResult}</h3>
-                  
-                  {/* แสดงภาพอาหารเมื่อสุ่มได้เมนูอาหาร */}
-                  {recipeObj && (
-                    <div style={{ height: 160, borderRadius: 12, overflow: 'hidden', marginBottom: 20, border: '1px solid var(--border-card)' }}>
-                      <img src={getRecipeImage(recipeObj.image)} alt={recipeObj.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    </div>
-                  )}
-
-                  {wheelType === 'food' ? (
-                    <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
-                      <button 
-                        onClick={() => {
-                          if (recipeObj) handleSelectRecipe(recipeObj);
-                          else alert("นี่เป็นสูตรสุ่มจากคลังเพิ่มเติม กำลังพัฒนาหน้าเว็บสูตรขยาย");
-                        }} 
-                        className="control-btn" 
-                        style={{ flex: 1, background: 'var(--color-success)', color: 'white', border: 'none', justifyContent: 'center' }}
-                      >
-                        ยืนยัน (Confirm)
-                      </button>
-                      <button 
-                        onClick={() => setWheelResult(null)} 
-                        className="control-btn" 
-                        style={{ flex: 1, background: 'rgba(255,255,255,0.06)', color: 'var(--color-text-muted)', border: '1px solid var(--border-card)', justifyContent: 'center' }}
-                      >
-                        ยกเลิก (Cancel)
-                      </button>
-                    </div>
-                  ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                      <button 
-                        onClick={() => {
-                          const ingObj = ingredientsDb.find(i => i.name.startsWith(wheelResult));
-                          alert(`คุณสมบัติของ ${wheelResult}:\n- แคลอรี่: ${ingObj ? ingObj.caloriesPerGram : 1.2} kcal/g\n- โปรตีน: ${ingObj ? Math.round(ingObj.protein*100) : 10}%\n- คาร์โบไฮเดรต: ${ingObj ? Math.round(ingObj.carbs*100) : 20}%`);
-                        }} 
-                        className="control-btn" 
-                        style={{ width: '100%', background: 'var(--color-accent)', color: 'white', border: 'none', justifyContent: 'center' }}
-                      >
-                        ดูสรรพคุณวัตถุดิบ (Wiki)
-                      </button>
-                      <button 
-                        onClick={() => setWheelResult(null)} 
-                        className="control-btn" 
-                        style={{ width: '100%', background: 'rgba(255,255,255,0.06)', color: 'var(--color-text-muted)', border: '1px solid var(--border-card)', justifyContent: 'center' }}
-                      >
-                        ปิดหน้าต่าง
-                      </button>
-                    </div>
-                  )}
-                </div>
-              );
-            })()}
           </div>
         )}
 
@@ -1996,7 +1835,7 @@ export default function App() {
                 <h2 style={{ fontSize: '1.6rem', fontWeight: 800 }}>{t.socialTitle}</h2>
                 <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem' }}>โพสต์โชว์จานโปรดของคุณ แชร์เคล็ดลับ หรือกดยื่นเสนอสูตรใหม่</p>
               </div>
-              <button onClick={() => setActiveTab('social-post-creator')} className="control-btn" style={{ background: 'var(--color-accent)', color: 'white', border: 'none' }}>
+              <button onClick={() => setActiveTab('social-post-creator')} className="control-btn" style={{ background: 'var(--color-accent)', color: 'var(--color-accent-text)', border: 'none' }}>
                 <Plus size={18} /> {t.postBtn}
               </button>
             </div>
@@ -2073,13 +1912,92 @@ export default function App() {
                         className="form-input" 
                         style={{ flex: 1, height: 32, fontSize: '0.8rem', borderRadius: 16, padding: '0 12px' }}
                       />
-                      <button onClick={() => handleAddComment(post.id)} className="control-btn" style={{ height: 32, fontSize: '0.8rem', padding: '0 12px', background: 'var(--color-accent)', color: 'white', border: 'none', borderRadius: 16 }}>
+                      <button onClick={() => handleAddComment(post.id)} className="control-btn" style={{ height: 32, fontSize: '0.8rem', padding: '0 12px', background: 'var(--color-accent)', color: 'var(--color-accent-text)', border: 'none', borderRadius: 16 }}>
                         ส่ง
                       </button>
                     </div>
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* แท็บหน้าระบบ: เมนูแนะนำ (Recommended Menu) */}
+        {activeTab === 'menu' && (
+          <div style={{ padding: '20px 0', maxWidth: '1200px', margin: '0 auto' }}>
+            <div className="glass-card" style={{ width: '100%', padding: '40px 24px', textAlign: 'center', marginBottom: 30 }}>
+              <h2 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--color-primary-green)', marginBottom: 8, textTransform: 'uppercase' }}>
+                {t.menuTab}
+              </h2>
+              <p style={{ color: 'var(--color-text-muted)', fontSize: '1rem' }}>สัมผัสรสชาติอันพิถีพิถันจากเชฟยอดฝีมือของ N.Food</p>
+            </div>
+
+            {/* Grid สำหรับจัดเรียงการ์ดเมนู (3 เมนูต่อแถว) */}
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+              gap: '30px' 
+            }}>
+              
+              {/* ใช้คำสั่ง .map() เพื่อวนลูปสร้างการ์ดตามจำนวนข้อมูลที่มี */}
+              {menuItems.map((item) => (
+                <div key={item.id} className="glass-card" style={{
+                  overflow: 'hidden',
+                  padding: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: '100%',
+                  border: '1px solid var(--border-card)',
+                  boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-5px)';
+                  e.currentTarget.style.boxShadow = '0 12px 30px rgba(0,0,0,0.1)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.05)';
+                }}>
+                  {/* ดึงรูปภาพมาแสดง และจัดให้อยู่ในกรอบพอดี */}
+                  <img 
+                    src={getRecipeImage(item.image.replace(/^\//, ''))} 
+                    alt={item.name} 
+                    style={{ width: '100%', height: '250px', objectFit: 'cover' }} 
+                  />
+                  
+                  {/* ส่วนเนื้อหาของการ์ด */}
+                  <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                    <h3 style={{ color: 'var(--color-primary-green)', margin: '0 0 10px 0', fontSize: '1.25rem', fontWeight: 700 }}>{item.name}</h3>
+                    <p style={{ color: 'var(--color-text-main)', fontSize: '14px', lineHeight: 1.6, marginBottom: '20px', flex: 1 }}>
+                      {item.description}
+                    </p>
+                    
+                    {/* ปุ่มสั่งอาหารและดูรายละเอียดแบบหรูหราเต็มกรอบ */}
+                    <button style={{
+                      backgroundColor: 'var(--color-accent-gold)',
+                      color: '#fff',
+                      border: 'none',
+                      padding: '12px 15px',
+                      borderRadius: '5px',
+                      cursor: 'pointer',
+                      fontWeight: 'bold',
+                      width: '100%', /* ปรับปุ่มให้กว้างเต็มพื้นที่ */
+                      letterSpacing: '1px', /* เพิ่มช่องไฟตัวอักษรให้ดูแพงขึ้น */
+                      transition: 'all 0.3s ease'
+                    }}
+                    onMouseOver={(e) => e.target.style.backgroundColor = 'var(--color-primary-green)'} // เอฟเฟกต์ตอนชี้เมาส์
+                    onMouseOut={(e) => e.target.style.backgroundColor = 'var(--color-accent-gold)'}
+                    onClick={() => alert(`คุณสั่ง "${item.name}" สำเร็จแล้ว! ทางเราจะรีบเตรียมอาหารของคุณ`)}
+                    >
+                      ดูรายละเอียด / สั่งเลย
+                    </button>
+
+                  </div>
+                </div>
+              ))}
+
             </div>
           </div>
         )}
@@ -2226,7 +2144,7 @@ export default function App() {
                   </button>
                 </div>
 
-                <button type="submit" className="control-btn" style={{ width: '100%', height: 48, background: 'var(--color-accent)', color: 'white', border: 'none', justifyContent: 'center', fontWeight: 'bold', fontSize: '1rem', marginTop: 12 }}>
+                <button type="submit" className="control-btn" style={{ width: '100%', height: 48, background: 'var(--color-accent)', color: 'var(--color-accent-text)', border: 'none', justifyContent: 'center', fontWeight: 'bold', fontSize: '1rem', marginTop: 12 }}>
                   ส่งเสนอสูตรอาหาร
                 </button>
               </div>
@@ -2234,7 +2152,7 @@ export default function App() {
           </div>
         )}
 
-        {/* แดชบอร์ดตรวจสอบของแอดมิน (Admin Panel) */}
+        {/* แดชบอร์ดตรวจสอบของ Chef Line-N.Food (Chef Line-N.Food Panel) */}
         {activeTab === 'admin' && user?.isAdmin && (
           <div>
             <div className="glass-card" style={{ marginBottom: 24 }}>
@@ -2444,7 +2362,7 @@ export default function App() {
                     ))}
                   </div>
 
-                  <button onClick={startCookingMode} className="control-btn" style={{ width: '100%', background: 'var(--color-accent)', color: 'white', border: 'none', height: 48, justifyContent: 'center', fontWeight: 'bold' }}>
+                  <button onClick={startCookingMode} className="control-btn" style={{ width: '100%', background: 'var(--color-accent)', color: 'var(--color-accent-text)', border: 'none', height: 48, justifyContent: 'center', fontWeight: 'bold' }}>
                     <Timer size={18} /> {t.startCooking}
                   </button>
                 </div>
@@ -2554,9 +2472,29 @@ export default function App() {
               <button 
                 onClick={handleNextStep}
                 className="control-btn"
-                style={{ background: 'var(--color-accent)', color: 'white', border: 'none' }}
+                style={{ background: 'var(--color-accent)', color: 'var(--color-accent-text)', border: 'none' }}
               >
                 {cookingStep === selectedRecipe.steps.length - 1 ? 'เสร็จสิ้นการทำ' : 'ขั้นตอนถัดไป'} <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
+        )}
+        {/* โมดอลแสดงโลโก้แบรนด์แบบพรีเมียมขยายใหญ่ (Logo Preview Modal) */}
+        {showLogoModal && (
+          <div className="cooking-modal" style={{ display: 'flex', zIndex: 1200, background: 'rgba(10, 60, 42, 0.45)', backdropFilter: 'blur(15px)', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+            <div className="glass-card" style={{ maxWidth: '440px', width: '90%', textAlign: 'center', padding: '32px', position: 'relative', border: '1px solid rgba(212, 175, 55, 0.35)', boxShadow: '0 20px 50px rgba(0,0,0,0.3)', animation: 'scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}>
+              <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--color-primary-green)', marginBottom: 20 }}>N.Food Brand Logo</h3>
+              
+              <div style={{ background: '#ffffff', padding: '24px', borderRadius: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid var(--border-card)', marginBottom: 24, boxShadow: 'inset 0 0 10px rgba(0,0,0,0.05)' }}>
+                <img src="/New-Food/nfood_lux_logo.png" alt="N.Food Logo Large" style={{ width: '160px', height: '160px', borderRadius: '24px', objectFit: 'cover' }} />
+              </div>
+              
+              <p style={{ fontSize: '0.85rem', color: 'var(--color-text-main)', lineHeight: 1.6, marginBottom: 24, textAlign: 'justify' }}>
+                โลโก้แบรนด์ N.Food ดีไซน์สไตล์มินิมอลผสานความหรูหรา ใช้โครงร่างรูปหมวกเชฟและใบไม้ออร์แกนิกเฉดสีทองแชมเปญ บนพื้นหลังลวดลายเส้นใยลินินสีขาวสะอาดตา สะท้อนถึงการรังสรรค์เมนูสุขภาพที่ประณีตและมีระดับ
+              </p>
+              
+              <button onClick={() => setShowLogoModal(false)} className="control-btn" style={{ width: '100%', justifyContent: 'center', height: '44px', fontWeight: 'bold', background: 'var(--color-accent)', color: 'var(--color-accent-text)', border: 'none' }}>
+                ปิดหน้าต่าง
               </button>
             </div>
           </div>
