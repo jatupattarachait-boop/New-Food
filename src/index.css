@@ -215,6 +215,36 @@ h6 {
   --border-card: rgba(212, 175, 55, 0.15);
 }
 
+/* Sidebar toggle states */
+.sidebar.open {
+  width: 280px;
+}
+
+.sidebar.closed {
+  width: 80px;
+  padding: 32px 14px;
+}
+
+.sidebar.closed .logo-section {
+  gap: 0 !important;
+  justify-content: center !important;
+}
+
+.sidebar.closed .nav-links {
+  align-items: center;
+}
+
+.sidebar.closed .nav-item {
+  justify-content: center;
+  padding: 12px 0;
+  width: 100%;
+}
+
+.sidebar.closed .sidebar-footer {
+  display: flex;
+  justify-content: center;
+}
+
 .logo-section {
   display: flex;
   align-items: center;
@@ -292,6 +322,21 @@ h6 {
   /* เพิ่มความหรูหราด้วยการปล่อยพื้นที่ว่าง */
   min-height: 100vh;
   transition: var(--transition-smooth);
+}
+
+.main-content.sidebar-open {
+  margin-left: 280px;
+}
+
+.main-content.sidebar-closed {
+  margin-left: 80px;
+}
+
+@media (max-width: 1024px) {
+  .main-content.sidebar-open,
+  .main-content.sidebar-closed {
+    margin-left: 0 !important;
+  }
 }
 
 /* Header UI */
