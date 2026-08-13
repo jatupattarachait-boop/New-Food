@@ -1365,99 +1365,81 @@ export default function App() {
       )}
 
       {/* 2. เมนูด้านข้าง Sidebar (แสดงเฉพาะเดสก์ท็อป) */}
-      <aside className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
-        <div className="logo-section" style={{ gap: sidebarOpen ? '16px' : '0px', display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <img 
-              src="/New-Food/nfood_lux_logo.png" 
-              alt="N.Food Logo" 
-              onClick={() => setShowLogoModal(true)}
-              style={{ width: '42px', height: '42px', borderRadius: '10px', objectFit: 'cover', cursor: 'pointer', transition: 'transform 0.2s', flexShrink: 0 }} 
-              onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-              onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-              title="คลิกเพื่อดูโลโก้แบรนด์"
-            />
+      <aside className={`sidebar-container ${sidebarOpen ? 'open' : 'closed'}`}>
+        {/* ส่วนหัวของ Sidebar (โลโก้ + ปุ่มกดพับเก็บ) */}
+        <div className="sidebar-header" style={{ width: '100%' }}>
+          <div className="logo-section" style={{ gap: sidebarOpen ? '10px' : '0px' }}>
+            <div className="logo-icon" onClick={() => setShowLogoModal(true)} style={{ cursor: 'pointer' }} title="คลิกเพื่อดูโลโก้แบรนด์">
+              <img 
+                src="/New-Food/nfood_lux_logo.png" 
+                alt="N.Food Logo" 
+                style={{ width: '100%', height: '100%', borderRadius: '8px', objectFit: 'cover' }} 
+              />
+            </div>
             {sidebarOpen && (
-              <div onClick={() => { setActiveTab('home'); setSelectedRecipe(null); }} style={{ cursor: 'pointer' }} title="กลับสู่หน้าแรก">
-                <span className="logo-text">N.Food</span>
-                <div style={{ fontSize: '0.65rem', color: 'var(--color-accent)', letterSpacing: 2 }}>NEW FOOD</div>
+              <div className="logo-text" onClick={() => { setActiveTab('home'); setSelectedRecipe(null); }} style={{ cursor: 'pointer' }} title="กลับสู่หน้าแรก">
+                <h3>N.Food</h3>
+                <span>NEW FOOD</span>
               </div>
             )}
           </div>
-          
-          {/* ปุ่มพับ/กาง Sidebar */}
-          <button 
-            onClick={() => setSidebarOpen(!sidebarOpen)} 
-            style={{
-              background: 'none',
-              border: 'none',
-              color: 'var(--color-text-muted)',
-              fontSize: '1.35rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '4px 8px',
-              transition: 'color 0.2s',
-              outline: 'none'
-            }}
-            onMouseOver={(e) => e.currentTarget.style.color = 'var(--color-accent)'}
-            onMouseOut={(e) => e.currentTarget.style.color = 'var(--color-text-muted)'}
-            title={sidebarOpen ? "พับแถบเมนู" : "กางแถบเมนู"}
-          >
+          {/* ปุ่ม ☰ สำหรับกดเปิด/ปิด */}
+          <button className="toggle-btn" onClick={() => setSidebarOpen(!sidebarOpen)} title={sidebarOpen ? "พับแถบเมนู" : "กางแถบเมนู"}>
             ☰
           </button>
         </div>
 
-        <nav className="nav-links">
-          <div className={`nav-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => { setActiveTab('home'); setSelectedRecipe(null); }} title="ค้นหาสูตรอาหาร">
-            <Compass size={20} />
-            {sidebarOpen && <span>ค้นหาสูตรอาหาร</span>}
-          </div>
-          <div className={`nav-item ${activeTab === 'menu' ? 'active' : ''}`} onClick={() => { setActiveTab('menu'); setSelectedRecipe(null); }} title={t.menuTab}>
-            <Utensils size={20} />
-            {sidebarOpen && <span>{t.menuTab}</span>}
-          </div>
-          <div className={`nav-item ${activeTab === 'fridge' ? 'active' : ''}`} onClick={() => { setActiveTab('fridge'); setSelectedRecipe(null); }} title="ตู้เย็นอัจฉริยะ">
-            <Scale size={20} />
-            {sidebarOpen && <span>ตู้เย็นอัจฉริยะ</span>}
-          </div>
-          <div className={`nav-item ${activeTab === 'wheel' ? 'active' : ''}`} onClick={() => { setActiveTab('wheel'); setSelectedRecipe(null); }} title="วงล้อสุ่มอาหาร">
-            <Dices size={20} />
-            {sidebarOpen && <span>วงล้อสุ่มอาหาร</span>}
-          </div>
-          <div className={`nav-item ${activeTab === 'social' ? 'active' : ''}`} onClick={() => { setActiveTab('social'); setSelectedRecipe(null); }} title="คอมมูนิตี้แชร์สูตร">
-            <Users size={20} />
-            {sidebarOpen && <span>คอมมูนิตี้แชร์สูตร</span>}
-          </div>
+        {/* ส่วนเมนูต่างๆ */}
+        <ul className="sidebar-menu">
+          <li className={`menu-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => { setActiveTab('home'); setSelectedRecipe(null); }} title="ค้นหาสูตรอาหาร">
+            <span className="icon"><Compass size={20} /></span>
+            {sidebarOpen && <span className="text">ค้นหาสูตรอาหาร</span>}
+          </li>
+          <li className={`menu-item ${activeTab === 'menu' ? 'active' : ''}`} onClick={() => { setActiveTab('menu'); setSelectedRecipe(null); }} title={t.menuTab}>
+            <span className="icon"><Utensils size={20} /></span>
+            {sidebarOpen && <span className="text">{t.menuTab}</span>}
+          </li>
+          <li className={`menu-item ${activeTab === 'fridge' ? 'active' : ''}`} onClick={() => { setActiveTab('fridge'); setSelectedRecipe(null); }} title="ตู้เย็นอัจฉริยะ">
+            <span className="icon"><Scale size={20} /></span>
+            {sidebarOpen && <span className="text">ตู้เย็นอัจฉริยะ</span>}
+          </li>
+          <li className={`menu-item ${activeTab === 'wheel' ? 'active' : ''}`} onClick={() => { setActiveTab('wheel'); setSelectedRecipe(null); }} title="วงล้อสุ่มอาหาร">
+            <span className="icon"><Dices size={20} /></span>
+            {sidebarOpen && <span className="text">วงล้อสุ่มอาหาร</span>}
+          </li>
+          <li className={`menu-item ${activeTab === 'social' ? 'active' : ''}`} onClick={() => { setActiveTab('social'); setSelectedRecipe(null); }} title="คอมมูนิตี้แชร์สูตร">
+            <span className="icon"><Users size={20} /></span>
+            {sidebarOpen && <span className="text">คอมมูนิตี้แชร์สูตร</span>}
+          </li>
           {user?.isAdmin && (
-            <div className={`nav-item ${activeTab === 'admin' ? 'active' : ''}`} onClick={() => { setActiveTab('admin'); setSelectedRecipe(null); }} style={{ color: 'var(--color-warning)' }} title={t.reviewTitle}>
-              <ChefHat size={20} />
-              {sidebarOpen && <span>{t.reviewTitle} ({pendingRecipes.length})</span>}
-            </div>
+            <li className={`menu-item ${activeTab === 'admin' ? 'active' : ''}`} onClick={() => { setActiveTab('admin'); setSelectedRecipe(null); }} style={{ color: 'var(--color-warning)' }} title={t.reviewTitle}>
+              <span className="icon"><ChefHat size={20} /></span>
+              {sidebarOpen && <span className="text">{t.reviewTitle} ({pendingRecipes.length})</span>}
+            </li>
           )}
-        </nav>
+        </ul>
 
+        {/* ส่วนโปรไฟล์ผู้ใช้ด้านล่าง */}
         <div className="sidebar-footer">
           {user ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, justifyContent: sidebarOpen ? 'flex-start' : 'center' }}>
-                <div style={{ width: 36, height: 36, borderRadius: '50%', backgroundColor: 'var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-accent-text)', fontWeight: 'bold', flexShrink: 0 }}>
+              <div className="user-profile" style={{ justifyContent: sidebarOpen ? 'flex-start' : 'center', padding: 0 }}>
+                <div className="user-avatar" style={{ flexShrink: 0 }}>
                   {user.name[0]}
                 </div>
                 {sidebarOpen && (
-                  <div>
-                    <div style={{ fontSize: '0.9rem', fontWeight: 600, maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user.name}</div>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)' }}>{user.isAdmin ? t.adminBadge : 'Member'}</div>
+                  <div className="user-info">
+                    <span className="user-name">{user.name}</span>
+                    <span className="user-role">{user.isAdmin ? t.adminBadge : 'Member'}</span>
                   </div>
                 )}
               </div>
-              <button onClick={handleLogout} className="control-btn" style={{ fontSize: '0.85rem', padding: sidebarOpen ? '8px 12px' : '8px', justifyContent: 'center' }} title="ออกจากระบบ">
+              <button onClick={handleLogout} className="logout-btn" style={{ fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }} title="ออกจากระบบ">
                 <LogOut size={16} /> {sidebarOpen && "ออกจากระบบ"}
               </button>
             </div>
           ) : (
-            <button onClick={() => setShowLoginModal(true)} className="control-btn" style={{ width: '100%', justifyContent: 'center', padding: sidebarOpen ? '8px 16px' : '8px' }} title="เข้าสู่ระบบ">
+            <button onClick={() => setShowLoginModal(true)} className="logout-btn" style={{ width: '100%', justifyContent: 'center' }} title="เข้าสู่ระบบ">
               {sidebarOpen ? "เข้าสู่ระบบ" : "🔑"}
             </button>
           )}

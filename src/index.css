@@ -175,74 +175,10 @@ h6 {
   width: 100vw;
 }
 
-/* Sidebar Styling (Desktop) */
-.sidebar {
-  width: 280px;
-  background: rgba(27, 67, 50, 0.96);
-  /* สีเขียวเข้มหรูหรา */
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border-right: 1px solid rgba(212, 175, 55, 0.35);
-  /* เส้นขอบทองคำ */
-  display: flex;
-  flex-direction: column;
-  padding: 32px 24px;
-  /* เพิ่มพื้นที่โล่ง */
-  position: fixed;
-  height: 100vh;
-  left: 0;
-  top: 0;
-  z-index: 100;
-  transition: var(--transition-smooth);
-  box-shadow: 10px 0 40px rgba(27, 67, 50, 0.12);
-
-  /* ตัวแปรสีภายใน Sidebar เพื่อให้อ่านง่าย */
-  --color-text-main: #FFFDF9;
-  --color-text-muted: #A3C9A8;
-  --bg-card: rgba(255, 255, 255, 0.08);
-  --border-card: rgba(212, 175, 55, 0.25);
-}
-
-.dark-mode .sidebar {
-  background: rgba(18, 20, 21, 0.85);
+.dark-mode .sidebar-container {
+  background-color: #121415;
   border-right: 1px solid rgba(212, 175, 55, 0.15);
   box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3);
-
-  /* คืนค่าเป็นปกติในดาร์กโหมด */
-  --color-text-main: #f5f2eb;
-  --color-text-muted: #a8a297;
-  --bg-card: rgba(30, 32, 34, 0.55);
-  --border-card: rgba(212, 175, 55, 0.15);
-}
-
-/* Sidebar toggle states */
-.sidebar.open {
-  width: 280px;
-}
-
-.sidebar.closed {
-  width: 80px;
-  padding: 32px 14px;
-}
-
-.sidebar.closed .logo-section {
-  gap: 0 !important;
-  justify-content: center !important;
-}
-
-.sidebar.closed .nav-links {
-  align-items: center;
-}
-
-.sidebar.closed .nav-item {
-  justify-content: center;
-  padding: 12px 0;
-  width: 100%;
-}
-
-.sidebar.closed .sidebar-footer {
-  display: flex;
-  justify-content: center;
 }
 
 .logo-section {
@@ -317,7 +253,7 @@ h6 {
 /* Main Content Area */
 .main-content {
   flex: 1;
-  margin-left: 280px;
+  margin-left: 250px;
   padding: 48px 56px;
   /* เพิ่มความหรูหราด้วยการปล่อยพื้นที่ว่าง */
   min-height: 100vh;
@@ -325,7 +261,7 @@ h6 {
 }
 
 .main-content.sidebar-open {
-  margin-left: 280px;
+  margin-left: 250px;
 }
 
 .main-content.sidebar-closed {
@@ -1523,7 +1459,7 @@ h6 {
   direction: rtl;
 }
 
-.rtl-layout .sidebar {
+.rtl-layout .sidebar-container {
   left: auto;
   right: 0;
   border-right: none;
@@ -1532,7 +1468,7 @@ h6 {
 
 .rtl-layout .main-content {
   margin-left: 0;
-  margin-right: 280px;
+  margin-right: 250px;
 }
 
 /* Responsive Adaptations */
@@ -1563,7 +1499,7 @@ h6 {
     flex-direction: column;
   }
 
-  .sidebar {
+  .sidebar-container {
     display: none;
   }
 
@@ -1826,4 +1762,178 @@ h6 {
   object-fit: cover;
   margin-right: 6px;
   border: 1px solid var(--color-accent-gold);
+}
+
+/* --- โครงสร้างหลักของ Sidebar --- */
+.sidebar-container {
+  background-color: #214333; /* สีเขียวเข้มแบบในภาพ */
+  color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease-in-out; /* ทำให้การยืดหดนุ่มนวล */
+  padding: 20px 10px;
+  box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+}
+
+/* ความกว้างตอนเปิด */
+.sidebar-container.open {
+  width: 250px;
+}
+
+/* ความกว้างตอนพับเก็บ */
+.sidebar-container.closed {
+  width: 80px;
+}
+
+/* --- ส่วนหัวและปุ่มกดเปิด-ปิด --- */
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  padding: 0 10px;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  background-color: #f7f1e3;
+  color: #214333;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.logo-text h3 {
+  margin: 0;
+  color: #e5b35c; /* สีทอง */
+  font-size: 18px;
+}
+
+.logo-text span {
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* --- ส่วนเมนู --- */
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap; /* ป้องกันตัวหนังสือตกบรรทัดตอนหด */
+  border: 1px solid transparent;
+}
+
+.menu-item:hover {
+  background-color: #2e5944;
+}
+
+.menu-item.active {
+  background-color: #2e5944;
+  border: 1px solid #e5b35c; /* ขอบสีทองตอนถูกเลือก */
+  color: #e5b35c;
+}
+
+.menu-item .icon {
+  font-size: 20px;
+  min-width: 30px; /* ล็อกขนาดไอคอนให้ตรงกัน */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-item .text {
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+/* --- ส่วนโปรไฟล์ด้านล่าง --- */
+.sidebar-footer {
+  margin-top: auto;
+  border-top: 1px solid #3a6850;
+  padding-top: 20px;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  padding: 0 10px;
+}
+
+.user-avatar {
+  background-color: #e5b35c;
+  color: #214333;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+}
+
+.user-role {
+  font-size: 12px;
+  color: #a4bba8;
+}
+
+.logout-btn {
+  width: 100%;
+  background: none;
+  border: 1px solid #a4bba8;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.logout-btn:hover {
+  background-color: #cc4d4d;
+  border-color: #cc4d4d;
 }
