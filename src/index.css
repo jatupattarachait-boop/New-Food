@@ -2,13 +2,17 @@
 
 :root {
   --font-main: 'Outfit', 'Kanit', sans-serif;
-  
+
   /* สีที่กำหนดสูตร (NEW FOOD) */
-  --color-bg-cream: #FDFBF7;      /* สีพื้นหลัง: ครีมอ่อน สบายตา */
-  --color-primary-green: #1B4332; /* สีหลัก: เขียวมรกตเข้ม */
-  --color-accent-gold: #D4AF37;   /* สีเน้น: สีทองแชมเปญ */
-  --color-text-dark: #2D3A35;     /* สีตัวหนังสือ: เทาอมเขียวเข้ม */
-  
+  --color-bg-cream: #FDFBF7;
+  /* สีพื้นหลัง: ครีมอ่อน สบายตา */
+  --color-primary-green: #1B4332;
+  /* สีหลัก: เขียวมรกตเข้ม */
+  --color-accent-gold: #D4AF37;
+  /* สีเน้น: สีทองแชมเปญ */
+  --color-text-dark: #2D3A35;
+  /* สีตัวหนังสือ: เทาอมเขียวเข้ม */
+
   /* ระบบ Design System */
   --bg-primary: var(--color-bg-cream);
   --bg-secondary: #FFFDF9;
@@ -18,7 +22,8 @@
   --color-text-muted: #6B7C75;
   --color-accent: var(--color-accent-gold);
   --color-accent-hover: #C59B27;
-  --color-accent-text: var(--color-primary-green);   /* สีตัวอักษรบนพื้นสีทอง */
+  --color-accent-text: var(--color-primary-green);
+  /* สีตัวอักษรบนพื้นสีทอง */
   --color-accent-glow: rgba(212, 175, 55, 0.12);
   --color-success: #8eac50;
   --color-warning: #d58c73;
@@ -31,16 +36,21 @@
 /* ให้อารมณ์หรูหรา คลาสสิก อบอุ่นแบบตะวันตก */
 /* ========================================= */
 :root {
-  --color-bg-cream: #FDFBF7;      /* สีงาช้างคลาสสิก (Ivory) */
-  --color-primary-green: #1B4332; /* เขียวมรกตลึก (Deep Emerald) */
-  --color-accent-gold: #D4AF37;   /* ทองแชมเปญ (Champagne Gold) */
-  --color-text-dark: #2A3631;     /* เทาอมเขียวเข้มมาก */
+  --color-bg-cream: #FDFBF7;
+  /* สีงาช้างคลาสสิก (Ivory) */
+  --color-primary-green: #1B4332;
+  /* เขียวมรกตลึก (Deep Emerald) */
+  --color-accent-gold: #D4AF37;
+  /* ทองแชมเปญ (Champagne Gold) */
+  --color-text-dark: #2A3631;
+  /* เทาอมเขียวเข้มมาก */
 }
 
 body {
   background-color: var(--color-bg-cream);
   color: var(--color-text-dark);
-  transition: background-color 0.8s ease, color 0.8s ease; /* เปลี่ยนสีแบบสมูทและดูแพง */
+  transition: background-color 0.8s ease, color 0.8s ease;
+  /* เปลี่ยนสีแบบสมูทและดูแพง */
 }
 
 /* ========================================= */
@@ -48,9 +58,12 @@ body {
 /* ให้อารมณ์หรูหราแบบรีสอร์ตริมทะเล โปร่งสบายแต่ยังพรีเมียม */
 /* ========================================= */
 .theme-summer {
-  --color-bg-cream: #FAF6ED;      /* ครีมทรายอุ่นๆ (Warm Sand) สะท้อนแสงแดดอ่อนๆ */
-  --color-primary-green: #244C3A; /* เขียวใบปาล์มเข้ม (Tropical Dark Green) */
-  --color-accent-gold: #CFAB54;   /* ทองประกายแดด (Sunlit Gold) จะอบอุ่นขึ้นนิดนึง */
+  --color-bg-cream: #FAF6ED;
+  /* ครีมทรายอุ่นๆ (Warm Sand) สะท้อนแสงแดดอ่อนๆ */
+  --color-primary-green: #244C3A;
+  /* เขียวใบปาล์มเข้ม (Tropical Dark Green) */
+  --color-accent-gold: #CFAB54;
+  /* ทองประกายแดด (Sunlit Gold) จะอบอุ่นขึ้นนิดนึง */
 }
 
 /* ========================================= */
@@ -58,9 +71,12 @@ body {
 /* ให้อารมณ์หรูหราแบบสุขุม นุ่มลึก และโรแมนติก */
 /* ========================================= */
 .theme-rainy {
-  --color-bg-cream: #F2F4F3;      /* ครีมอมเทาไข่มุก (Pearl/Oyster) ให้อารมณ์เย็นและสงบ */
-  --color-primary-green: #183A2E; /* เขียวสนเข้มอมน้ำเงิน (Pine/Teal Green) */
-  --color-accent-gold: #BFA37E;   /* ทองแอนทีค (Antique Gold) ทองหม่นๆ ดูลึกลับและแพง */
+  --color-bg-cream: #F2F4F3;
+  /* ครีมอมเทาไข่มุก (Pearl/Oyster) ให้อารมณ์เย็นและสงบ */
+  --color-primary-green: #183A2E;
+  /* เขียวสนเข้มอมน้ำเงิน (Pine/Teal Green) */
+  --color-accent-gold: #BFA37E;
+  /* ทองแอนทีค (Antique Gold) ทองหม่นๆ ดูลึกลับและแพง */
 }
 
 .dark-mode {
@@ -72,7 +88,8 @@ body {
   --color-text-muted: #a8a297;
   --color-accent: #d4af37;
   --color-accent-hover: #f3e5ab;
-  --color-accent-text: #121415;  /* สีตัวอักษรบนพื้นสีทองในดาร์กโหมด */
+  --color-accent-text: #121415;
+  /* สีตัวอักษรบนพื้นสีทองในดาร์กโหมด */
   --color-accent-glow: rgba(212, 175, 55, 0.1);
   --shadow-glow: 0 4px 24px rgba(212, 175, 55, 0.08);
 }
@@ -92,13 +109,16 @@ body {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--bg-primary);
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--color-accent);
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-accent-hover);
 }
@@ -124,7 +144,11 @@ h1 {
   letter-spacing: -0.01em;
 }
 
-h2, h3, h4, h5, h6 {
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--color-primary-green);
   font-weight: 800;
   letter-spacing: -0.01em;
@@ -154,13 +178,16 @@ h2, h3, h4, h5, h6 {
 /* Sidebar Styling (Desktop) */
 .sidebar {
   width: 280px;
-  background: rgba(27, 67, 50, 0.96); /* สีเขียวเข้มหรูหรา */
+  background: rgba(27, 67, 50, 0.96);
+  /* สีเขียวเข้มหรูหรา */
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-  border-right: 1px solid rgba(212, 175, 55, 0.35); /* เส้นขอบทองคำ */
+  border-right: 1px solid rgba(212, 175, 55, 0.35);
+  /* เส้นขอบทองคำ */
   display: flex;
   flex-direction: column;
-  padding: 32px 24px; /* เพิ่มพื้นที่โล่ง */
+  padding: 32px 24px;
+  /* เพิ่มพื้นที่โล่ง */
   position: fixed;
   height: 100vh;
   left: 0;
@@ -168,7 +195,7 @@ h2, h3, h4, h5, h6 {
   z-index: 100;
   transition: var(--transition-smooth);
   box-shadow: 10px 0 40px rgba(27, 67, 50, 0.12);
-  
+
   /* ตัวแปรสีภายใน Sidebar เพื่อให้อ่านง่าย */
   --color-text-main: #FFFDF9;
   --color-text-muted: #A3C9A8;
@@ -180,7 +207,7 @@ h2, h3, h4, h5, h6 {
   background: rgba(18, 20, 21, 0.85);
   border-right: 1px solid rgba(212, 175, 55, 0.15);
   box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3);
-  
+
   /* คืนค่าเป็นปกติในดาร์กโหมด */
   --color-text-main: #f5f2eb;
   --color-text-muted: #a8a297;
@@ -239,7 +266,8 @@ h2, h3, h4, h5, h6 {
   border: 1px solid transparent;
 }
 
-.nav-item:hover, .nav-item.active {
+.nav-item:hover,
+.nav-item.active {
   color: var(--color-text-main);
   background-color: var(--color-accent-glow);
   border-color: rgba(212, 175, 55, 0.25);
@@ -260,7 +288,8 @@ h2, h3, h4, h5, h6 {
 .main-content {
   flex: 1;
   margin-left: 280px;
-  padding: 48px 56px; /* เพิ่มความหรูหราด้วยการปล่อยพื้นที่ว่าง */
+  padding: 48px 56px;
+  /* เพิ่มความหรูหราด้วยการปล่อยพื้นที่ว่าง */
   min-height: 100vh;
   transition: var(--transition-smooth);
 }
@@ -373,7 +402,8 @@ h2, h3, h4, h5, h6 {
   transition: var(--transition-smooth);
 }
 
-.lang-item:hover, .lang-item.selected {
+.lang-item:hover,
+.lang-item.selected {
   color: var(--color-text-main);
   background-color: var(--color-accent-glow);
 }
@@ -521,7 +551,8 @@ h2, h3, h4, h5, h6 {
   white-space: nowrap;
 }
 
-.filter-chip:hover, .filter-chip.active {
+.filter-chip:hover,
+.filter-chip.active {
   background-color: var(--color-accent);
   color: white;
   border-color: var(--color-accent);
@@ -975,6 +1006,7 @@ h2, h3, h4, h5, h6 {
 .timer-btn-primary {
   background-color: var(--color-accent);
 }
+
 .timer-btn-secondary {
   background-color: var(--color-text-muted);
 }
@@ -1004,11 +1036,15 @@ h2, h3, h4, h5, h6 {
   justify-content: center;
   align-items: center;
   margin: 40px auto;
-  
-  width: 100%;          /* ให้กว้างยืดหยุ่นตามหน้าจอ */
-  max-width: 400px;     /* แต่กว้างสุดห้ามเกิน 400px */
-  aspect-ratio: 1 / 1;  /* 🎯 บังคับให้ความสูงเท่ากับความกว้างเป๊ะๆ เสมอ (เวทมนตร์อยู่ตรงนี้) */
-  flex-shrink: 0;       /* 🎯 ห้ามให้กล่องภายนอกมาบีบวงล้อให้เบี้ยว */
+
+  width: 100%;
+  /* ให้กว้างยืดหยุ่นตามหน้าจอ */
+  max-width: 400px;
+  /* แต่กว้างสุดห้ามเกิน 400px */
+  aspect-ratio: 1 / 1;
+  /* 🎯 บังคับให้ความสูงเท่ากับความกว้างเป๊ะๆ เสมอ (เวทมนตร์อยู่ตรงนี้) */
+  flex-shrink: 0;
+  /* 🎯 ห้ามให้กล่องภายนอกมาบีบวงล้อให้เบี้ยว */
 }
 
 /* 2. เพิ่ม box-sizing เพื่อไม่ให้เส้นขอบ (Border) ไปดันวงล้อให้บิดเบี้ยว */
@@ -1017,13 +1053,15 @@ h2, h3, h4, h5, h6 {
   height: 100%;
   border-radius: 50%;
   overflow: hidden;
-  box-sizing: border-box; /* 🎯 สำคัญมาก: คำนวณเส้นขอบทองให้อยู่ในพื้นที่วงกลม ไม่ล้นออกไปข้างนอก */
-  
+  box-sizing: border-box;
+  /* 🎯 สำคัญมาก: คำนวณเส้นขอบทองให้อยู่ในพื้นที่วงกลม ไม่ล้นออกไปข้างนอก */
+
   border: 10px solid var(--color-accent-gold);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 
-              inset 0 0 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2),
+    inset 0 0 20px rgba(0, 0, 0, 0.3);
   position: relative;
-  transform: translateZ(0); /* 🎯 แก้บั๊ก WebKit/Safari ตัดขอบวงกลมไม่สมบูรณ์ */
+  transform: translateZ(0);
+  /* 🎯 แก้บั๊ก WebKit/Safari ตัดขอบวงกลมไม่สมบูรณ์ */
   transition: transform 5s cubic-bezier(0.2, 0.8, 0.1, 1);
 }
 
@@ -1039,7 +1077,7 @@ h2, h3, h4, h5, h6 {
   border-right: 20px solid transparent;
   border-top: 40px solid var(--color-accent-gold);
   z-index: 10;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
 }
 
 /* ปุ่มกดสุ่มตรงกลาง */
@@ -1058,7 +1096,7 @@ h2, h3, h4, h5, h6 {
   font-size: 18px;
   cursor: pointer;
   z-index: 5;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
 
@@ -1078,14 +1116,19 @@ h2, h3, h4, h5, h6 {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 50%; /* ลากจากจุดศูนย์กลางไปจนสุดขอบ */
+  width: 50%;
+  /* ลากจากจุดศูนย์กลางไปจนสุดขอบ */
   height: 40px;
-  margin-top: -20px; /* ดึงกลับครึ่งนึงเพื่อให้ความสูงอยู่กึ่งกลางพอดี */
-  transform-origin: 0% 50%; /* จุดหมุนอยู่ที่ซ้ายสุด (ตรงกลางวงล้อ) */
+  margin-top: -20px;
+  /* ดึงกลับครึ่งนึงเพื่อให้ความสูงอยู่กึ่งกลางพอดี */
+  transform-origin: 0% 50%;
+  /* จุดหมุนอยู่ที่ซ้ายสุด (ตรงกลางวงล้อ) */
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* ดันเนื้อหาไปชิดขอบขวา (ขอบวงล้อ) */
-  padding-right: 25px; /* เว้นระยะห่างจากขอบวงล้อ */
+  justify-content: flex-end;
+  /* ดันเนื้อหาไปชิดขอบขวา (ขอบวงล้อ) */
+  padding-right: 25px;
+  /* เว้นระยะห่างจากขอบวงล้อ */
   font-weight: bold;
   font-size: 14px;
   box-sizing: border-box;
@@ -1093,8 +1136,15 @@ h2, h3, h4, h5, h6 {
 
 /* เอฟเฟกต์เฟดตอนประกาศรางวัล */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Social and Recipe Creator Styling */
@@ -1118,7 +1168,7 @@ h2, h3, h4, h5, h6 {
   border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 700;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   gap: 4px;
@@ -1162,7 +1212,8 @@ h2, h3, h4, h5, h6 {
   font-size: 0.9rem;
 }
 
-.form-input, .form-textarea {
+.form-input,
+.form-textarea {
   background-color: var(--bg-primary);
   border: 1px solid var(--border-card);
   color: var(--color-text-main);
@@ -1173,7 +1224,8 @@ h2, h3, h4, h5, h6 {
   transition: var(--transition-smooth);
 }
 
-.form-input:focus, .form-textarea:focus {
+.form-input:focus,
+.form-textarea:focus {
   border-color: var(--color-accent);
   box-shadow: 0 0 8px var(--color-accent-glow);
 }
@@ -1408,21 +1460,31 @@ h2, h3, h4, h5, h6 {
 }
 
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 /* RTL Layout Direction */
 .rtl-layout {
   direction: rtl;
 }
+
 .rtl-layout .sidebar {
   left: auto;
   right: 0;
   border-right: none;
   border-left: 1px solid var(--border-card);
 }
+
 .rtl-layout .main-content {
   margin-left: 0;
   margin-right: 280px;
@@ -1434,8 +1496,15 @@ h2, h3, h4, h5, h6 {
 }
 
 @keyframes scaleIn {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -1448,14 +1517,17 @@ h2, h3, h4, h5, h6 {
   .app-container {
     flex-direction: column;
   }
+
   .sidebar {
     display: none;
   }
+
   .main-content {
     margin-left: 0 !important;
     margin-right: 0 !important;
     padding: 20px 16px 90px 16px;
   }
+
   .bottom-nav {
     display: flex;
     position: fixed;
@@ -1463,17 +1535,19 @@ h2, h3, h4, h5, h6 {
     left: 0;
     width: 100%;
     height: 70px;
-    background-color: rgba(27, 67, 50, 0.98); /* สีเขียวเข้มบนเมนูโมบายล์ */
+    background-color: rgba(27, 67, 50, 0.98);
+    /* สีเขียวเข้มบนเมนูโมบายล์ */
     border-top: 1px solid rgba(212, 175, 55, 0.3);
     z-index: 100;
     justify-content: space-around;
     align-items: center;
     padding: 0 10px;
-    
+
     /* ตัวแปรสีสำหรับการแสดงผลภายใต้ bottom-nav */
     --color-text-main: #FFFDF9;
     --color-text-muted: #A3C9A8;
   }
+
   .bottom-nav-item {
     display: flex;
     flex-direction: column;
@@ -1484,45 +1558,49 @@ h2, h3, h4, h5, h6 {
     cursor: pointer;
     transition: var(--transition-smooth);
   }
+
   .bottom-nav-item.active {
     color: var(--color-accent) !important;
   }
+
   .refrigerator-container {
     grid-template-columns: 1fr;
   }
 }
 
 /* Metallic Shine Sweep Animation for Premium Buttons */
-.control-btn, .wheel-spin-btn {
+.control-btn,
+.wheel-spin-btn {
   position: relative;
   overflow: hidden;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, color 0.3s ease;
 }
 
-.control-btn::after, .wheel-spin-btn::after {
+.control-btn::after,
+.wheel-spin-btn::after {
   content: '';
   position: absolute;
   top: 0;
   left: -150%;
   width: 50%;
   height: 100%;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.4) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
+  background: linear-gradient(to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      rgba(255, 255, 255, 0) 100%);
   transform: skewX(-25deg);
   transition: left 0.6s ease-in-out;
   pointer-events: none;
 }
 
-.control-btn:hover, .wheel-spin-btn:hover {
+.control-btn:hover,
+.wheel-spin-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(212, 175, 55, 0.25);
 }
 
-.control-btn:hover::after, .wheel-spin-btn:hover::after {
+.control-btn:hover::after,
+.wheel-spin-btn:hover::after {
   left: 150%;
 }
 
@@ -1548,10 +1626,11 @@ h2, h3, h4, h5, h6 {
   border: 1px solid var(--color-accent-gold);
   width: 100%;
   box-sizing: border-box;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-.wheel-select, .wheel-input {
+.wheel-select,
+.wheel-input {
   padding: 10px;
   border: 1px solid var(--color-primary-green);
   border-radius: 6px;
@@ -1620,7 +1699,8 @@ h2, h3, h4, h5, h6 {
   position: relative;
   width: 100%;
   max-width: 380px;
-  aspect-ratio: 1 / 1; /* บังคับให้เป็นจัตุรัสเสมอ */
+  aspect-ratio: 1 / 1;
+  /* บังคับให้เป็นจัตุรัสเสมอ */
   margin: 20px auto;
   box-sizing: border-box;
 }
@@ -1628,7 +1708,8 @@ h2, h3, h4, h5, h6 {
 .luxury-wheel {
   width: 100%;
   height: 100%;
-  border-radius: 50%; /* บังคับวงกลม */
+  border-radius: 50%;
+  /* บังคับวงกลม */
   overflow: hidden;
   box-sizing: border-box;
   border: 8px solid var(--color-accent-gold);
@@ -1648,7 +1729,7 @@ h2, h3, h4, h5, h6 {
   border-right: 18px solid transparent;
   border-top: 32px solid var(--color-accent-gold);
   z-index: 10;
-  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3));
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.3));
 }
 
 .wheel-spin-btn {
@@ -1666,7 +1747,7 @@ h2, h3, h4, h5, h6 {
   font-size: 16px;
   cursor: pointer;
   z-index: 5;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transition: all 0.2s ease;
 }
 
