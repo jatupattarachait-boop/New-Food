@@ -334,13 +334,15 @@ export default function App() {
   const [showLangMenu, setShowLangMenu] = useState(false);
   const [showLogoModal, setShowLogoModal] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [currentTheme, setCurrentTheme] = useState('');
+  const [currentTheme, setCurrentTheme] = useState('theme-winter');
+  const [selectedMenuItem, setSelectedMenuItem] = useState(null);
+  const [showSeasonMenu, setShowSeasonMenu] = useState(false);
 
   // ตรวจสอบฤดูกาลตามเดือนเมื่อเปิดใช้งานหน้าเว็บ
   useEffect(() => {
     const currentMonth = new Date().getMonth(); // มกราคม = 0, ธันวาคม = 11
 
-    // 0 = Jan, 1 = Feb, 10 = Nov, 11 = Dec -> ❄️ Winter (Default: currentTheme = '')
+    // 0 = Jan, 1 = Feb, 10 = Nov, 11 = Dec -> ❄️ Winter (Default: currentTheme = 'theme-winter')
     // 2 = Mar, 3 = Apr, 4 = May, 5 = Jun -> ☀️ Summer (.theme-summer)
     // 6 = Jul, 7 = Aug, 8 = Sep, 9 = Oct -> 🌧️ Rainy (.theme-rainy)
     if (currentMonth >= 2 && currentMonth <= 5) {
@@ -348,7 +350,7 @@ export default function App() {
     } else if (currentMonth >= 6 && currentMonth <= 9) {
       setCurrentTheme('theme-rainy');
     } else {
-      setCurrentTheme(''); // ธีมฤดูหนาว (Winter / Default)
+      setCurrentTheme('theme-winter'); // ธีมฤดูหนาว (Winter)
     }
   }, []);
 
@@ -461,14 +463,89 @@ export default function App() {
     { id: 2, text: "มีผู้ใช้แสดงความเห็นบนโพสต์ข้าวเหนียวมะม่วงของคุณ", read: false }
   ]);
 
-  // ระบบเสนอสูตรอาหารเข้าระบบ (UGC)
-  const [newRecipeName, setNewRecipeName] = useState('');
-  const [newRecipeType, setNewRecipeType] = useState('savory');
-  const [newRecipeCuisine, setNewRecipeCuisine] = useState('Thai');
-  const [newRecipeDescription, setNewRecipeDescription] = useState('');
-  const [newRecipeIngredients, setNewRecipeIngredients] = useState([{ name: '', amount: 100, unit: 'g' }]);
-  const [newRecipeSteps, setNewRecipeSteps] = useState([{ step: 1, text: '', duration: 0 }]);
-  const [pendingRecipes, setPendingRecipes] = useState([]); // แดชบอร์ดตรวจสอบของแอดมิน
+  // 1. ดึงข้อมูลจาก localStorage มาใช้เป็นค่าเริ่มต้น (ถ้ามี)
+  const [newRecipeName, setNewRecipeName] = useState(() => {
+    return localStorage.getItem('ugc_recipeName') || '';
+  });
+  const [newRecipeType, setNewRecipeType] = useState(() => {
+    return localStorage.getItem('ugc_recipeType') || 'savory';
+  });
+  const [newRecipeCuisine, setNewRecipeCuisine] = useState(() => {
+    return localStorage.getItem('ugc_recipeCuisine') || 'Thai';
+  });
+  const [newRecipeDescription, setNewRecipeDescription] = useState(() => {
+    return localStorage.getItem('ugc_recipeDescription') || '';
+  });
+  const [newRecipeIngredients, setNewRecipeIngredients] = useState(() => {
+    const saved = localStorage.getItem('ugc_recipeIngredients');
+    return saved ? JSON.parse(saved) : [{ name: '', amount: 100, unit: 'g' }];
+  });
+  const [newRecipeSteps, setNewRecipeSteps] = useState(() => {
+    const saved = localStorage.getItem('ugc_recipeSteps');
+    return saved ? JSON.parse(saved) : [{ step: 1, text: '', duration: 0 }];
+  });
+  const [pendingRecipes, setPendingRecipes] = useState(() => {
+    const saved = localStorage.getItem('ugc_pendingRecipes');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+// 2. บันทึกข้อมูลลง localStorage ทุกครั้งที่ State เปลี่ยนแปลง
+  useEffect(() => {
+    localStorage.setItem('ugc_recipeName', newRecipeName);
+  }, [newRecipeName]);
+
+  useEffect(() => {
+    localStorage.setItem('ugc_recipeType', newRecipeType);
+  }, [newRecipeType]);
+
+  useEffect(() => {
+    localStorage.setItem('ugc_recipeCuisine', newRecipeCuisine);
+  }, [newRecipeCuisine]);
+
+  useEffect(() => {
+    localStorage.setItem('ugc_recipeDescription', newRecipeDescription);
+  }, [newRecipeDescription]);
+
+  useEffect(() => {
+    localStorage.setItem('ugc_recipeIngredients', JSON.stringify(newRecipeIngredients));
+  }, [newRecipeIngredients]);
+
+  useEffect(() => {
+    localStorage.setItem('ugc_recipeSteps', JSON.stringify(newRecipeSteps));
+  }, [newRecipeSteps]);
+
+  useEffect(() => {
+    localStorage.setItem('ugc_pendingRecipes', JSON.stringify(pendingRecipes));
+  }, [pendingRecipes]);
+
+// 3. ฟังก์ชันสำหรับล้างข้อมูลฟอร์มหลังจากส่งสูตรอาหารสำเร็จ
+  const clearForm = () => {
+    setNewRecipeName('');
+    setNewRecipeType('savory');
+    setNewRecipeCuisine('Thai');
+    setNewRecipeDescription('');
+    setNewRecipeIngredients([{ name: '', amount: 100, unit: 'g' }]);
+    setNewRecipeSteps([{ step: 1, text: '', duration: 0 }]);
+  };
+
+  // ตัวอย่างฟังก์ชัน Submit
+  const handleSubmitRecipe = (e) => {
+    e.preventDefault();
+    const newRecipe = {
+      id: Date.now(),
+      name: newRecipeName,
+      type: newRecipeType,
+      cuisine: newRecipeCuisine,
+      description: newRecipeDescription,
+      ingredients: newRecipeIngredients,
+      steps: newRecipeSteps
+    };
+    
+    // เพิ่มเข้าแดชบอร์ดแอดมิน
+    setPendingRecipes([...pendingRecipes, newRecipe]);
+    // ล้างฟอร์มกรอกข้อมูล
+    clearForm();
+  };
 
   // โหลดฐานข้อมูล 1,500 วัตถุดิบ และ 300 สูตร
   useEffect(() => {
@@ -1496,6 +1573,34 @@ export default function App() {
               </button>
             </div>
 
+            {/* ปุ่มเปลี่ยนธีมฤดูกาลด้วยตนเอง */}
+            <div className="lang-dropdown" style={{ marginRight: 8 }}>
+              <button onClick={() => setShowSeasonMenu(!showSeasonMenu)} className="control-btn" style={{ display: 'flex', alignItems: 'center', gap: 8, height: 42, padding: '0 14px' }}>
+                <span style={{ fontSize: '1.1rem' }}>
+                  {currentTheme === 'theme-summer' ? '☀️' : currentTheme === 'theme-rainy' ? '🌧️' : currentTheme === 'theme-winter' ? '❄️' : '🍃'}
+                </span>
+                <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>
+                  {currentTheme === 'theme-summer' ? 'Summer' : currentTheme === 'theme-rainy' ? 'Rainy' : currentTheme === 'theme-winter' ? 'Winter' : 'Original'}
+                </span>
+              </button>
+              {showSeasonMenu && (
+                <div className="lang-menu" style={{ right: 0, minWidth: '180px' }}>
+                  <div className={`lang-item ${currentTheme === 'theme-winter' ? 'selected' : ''}`} onClick={() => { setCurrentTheme('theme-winter'); setShowSeasonMenu(false); }}>
+                    ❄️ ฤดูหนาว (Winter)
+                  </div>
+                  <div className={`lang-item ${currentTheme === 'theme-summer' ? 'selected' : ''}`} onClick={() => { setCurrentTheme('theme-summer'); setShowSeasonMenu(false); }}>
+                    ☀️ ฤดูร้อน (Summer)
+                  </div>
+                  <div className={`lang-item ${currentTheme === 'theme-rainy' ? 'selected' : ''}`} onClick={() => { setCurrentTheme('theme-rainy'); setShowSeasonMenu(false); }}>
+                    🌧️ ฤดูฝน (Rainy)
+                  </div>
+                  <div className={`lang-item ${currentTheme === '' ? 'selected' : ''}`} onClick={() => { setCurrentTheme(''); setShowSeasonMenu(false); }}>
+                    🍃 สีหลักของเว็บ (Original)
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* ปุ่มเลือกภาษาอัจฉริยะ */}
             <div className="lang-dropdown">
               <button onClick={() => setShowLangMenu(!showLangMenu)} className="control-btn">
@@ -2001,7 +2106,7 @@ export default function App() {
                     }}
                     onMouseOver={(e) => e.target.style.backgroundColor = 'var(--color-primary-green)'} // เอฟเฟกต์ตอนชี้เมาส์
                     onMouseOut={(e) => e.target.style.backgroundColor = 'var(--color-accent-gold)'}
-                    onClick={() => alert(`คุณสั่ง "${item.name}" สำเร็จแล้ว! ทางเราจะรีบเตรียมอาหารของคุณ`)}
+                    onClick={() => setSelectedMenuItem(item)}
                     >
                       ดูรายละเอียด / สั่งเลย
                     </button>
@@ -2508,6 +2613,82 @@ export default function App() {
               <button onClick={() => setShowLogoModal(false)} className="control-btn" style={{ width: '100%', justifyContent: 'center', height: '44px', fontWeight: 'bold', background: 'var(--color-accent)', color: 'var(--color-accent-text)', border: 'none' }}>
                 ปิดหน้าต่าง
               </button>
+            </div>
+          </div>
+        )}
+        {/* โมดอลแสดงรายละเอียดของเมนูแนะนำ (Menu Item Details Modal) */}
+        {selectedMenuItem && (
+          <div className="cooking-modal" style={{ display: 'flex', zIndex: 1200, background: 'rgba(10, 15, 12, 0.65)', backdropFilter: 'blur(20px)', justifyContent: 'center', alignItems: 'center' }}>
+            <div className="glass-card" style={{ maxWidth: '640px', width: '90%', padding: '0', position: 'relative', border: '1px solid rgba(212, 175, 55, 0.45)', boxShadow: '0 25px 60px rgba(0,0,0,0.4)', animation: 'scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1)', overflow: 'hidden' }}>
+              
+              {/* แถบหัวกระดาษของโมดอล */}
+              <div style={{ position: 'relative', height: '240px' }}>
+                <img 
+                  src={getRecipeImage(selectedMenuItem.image.replace(/^\//, ''))} 
+                  alt={selectedMenuItem.name} 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                />
+                <button 
+                  onClick={() => setSelectedMenuItem(null)} 
+                  style={{ position: 'absolute', top: '16px', right: '16px', background: 'rgba(0,0,0,0.5)', border: 'none', color: '#fff', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', fontSize: '1.2rem', fontWeight: 'bold', transition: 'background 0.2s' }}
+                  onMouseOver={(e) => e.target.style.background = 'rgba(239, 68, 68, 0.8)'}
+                  onMouseOut={(e) => e.target.style.background = 'rgba(0,0,0,0.5)'}
+                >
+                  &times;
+                </button>
+                <div style={{ position: 'absolute', bottom: '0', left: '0', right: '0', background: 'linear-gradient(to top, rgba(10,15,12,0.95), transparent)', padding: '24px 24px 12px 24px' }}>
+                  <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-primary-green)', textShadow: '0 2px 4px rgba(0,0,0,0.5)', margin: 0 }}>
+                    {selectedMenuItem.name}
+                  </h3>
+                </div>
+              </div>
+
+              {/* ส่วนเนื้อหารายละเอียด */}
+              <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', color: 'var(--color-text-main)' }}>
+                <div>
+                  <h4 style={{ fontSize: '0.85rem', textTransform: 'uppercase', color: 'var(--color-accent-gold)', fontWeight: 700, marginBottom: '6px', letterSpacing: '0.5px' }}>รายละเอียดเมนู</h4>
+                  <p style={{ fontSize: '0.95rem', lineHeight: '1.6', margin: 0, color: 'var(--color-text-main)', textAlign: 'justify' }}>
+                    {selectedMenuItem.details}
+                  </p>
+                </div>
+
+                <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', background: 'rgba(255,255,255,0.03)', padding: '16px', borderRadius: '12px', border: '1px solid var(--border-card)' }}>
+                  <div style={{ flex: '1 1 200px' }}>
+                    <h4 style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--color-text-muted)', fontWeight: 700, marginBottom: '4px', letterSpacing: '0.5px' }}>ประมาณการราคาวัตถุดิบ</h4>
+                    <span style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-primary-green)' }}>
+                      {selectedMenuItem.priceRange}
+                    </span>
+                  </div>
+                  <div style={{ flex: '1 1 200px' }}>
+                    <h4 style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--color-text-muted)', fontWeight: 700, marginBottom: '4px', letterSpacing: '0.5px' }}>คำค้นหา (Keyword)</h4>
+                    <span style={{ fontSize: '0.9rem', color: 'var(--color-text-main)', fontFamily: 'monospace', background: 'rgba(255,255,255,0.05)', padding: '4px 8px', borderRadius: '4px' }}>
+                      {selectedMenuItem.keyword}
+                    </span>
+                  </div>
+                </div>
+
+                {/* ปุ่มควบคุมในโมดอล */}
+                <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+                  <button 
+                    onClick={() => setSelectedMenuItem(null)} 
+                    className="control-btn" 
+                    style={{ flex: 1, justifyContent: 'center', height: '48px', fontWeight: 'bold', background: 'rgba(255,255,255,0.05)', color: 'var(--color-text-main)', border: '1px solid var(--border-card)' }}
+                  >
+                    ปิดหน้านี้
+                  </button>
+                  <button 
+                    onClick={() => {
+                      alert(`คุณสั่ง "${selectedMenuItem.name}" สำเร็จแล้ว! ทางเชฟของ N.Food จะรีบจัดเตรียมอาหารของคุณ`);
+                      setSelectedMenuItem(null);
+                    }} 
+                    className="control-btn" 
+                    style={{ flex: 2, justifyContent: 'center', height: '48px', fontWeight: 'bold', background: 'var(--color-accent)', color: 'var(--color-accent-text)', border: 'none' }}
+                  >
+                    จองโต๊ะ / สั่งอาหารเลย
+                  </button>
+                </div>
+              </div>
+
             </div>
           </div>
         )}

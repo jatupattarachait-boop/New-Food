@@ -596,12 +596,42 @@ export const generateFullRecipesDatabase = (ingredientsDb) => {
       cookTime: 10 + Math.floor(Math.random() * 20),
       description: `เมนูอาหารคาวแสนอร่อยสไตล์สร้างสรรค์ ปรุงง่าย ดีต่อสุขภาพ อุดมไปด้วยโปรตีนและสารอาหารที่ครบถ้วน เหมาะสำหรับทุกวัน`,
       image: (() => {
-        if (name.includes("แกงเขียวหวาน") || name.includes("กะเพรา") || name.includes("ผัดไทย")) return "Image/pad_thai.png";
-        if (name.includes("ต้ม") || name.includes("ซุป") || name.includes("แกงส้ม") || name.includes("ต้มยำ")) return "Image/tom_yum.png";
-        if (name.includes("พาสต้า") || name.includes("สปาเก็ตตี้")) return "Image/carbonara.png";
-        if (name.includes("พิซซ่า") || name.includes("ทาโก้")) return "Image/pizza_margherita.png";
-        if (name.includes("ราเมน") || name.includes("บะหมี่") || name.includes("ก๋วยเตี๋ยว")) return "Image/ramen.png";
-        if (name.includes("แกงเผ็ด") || name.includes("ไก่ผัด") || name.includes("มัสมั่น") || name.includes("แกงบัตเตอร์") || name.includes("พะแนง")) return "Image/butter_chicken.png";
+        const n = name.toLowerCase();
+        if (n.includes("กะเพรา")) return "https://images.unsplash.com/photo-1626804475315-9644b37a2fe4?w=500&auto=format&fit=crop";
+        if (n.includes("ต้มยำ")) return "Image/tom_yum.png";
+        if (n.includes("ผัดไทย")) return "Image/pad_thai.png";
+        if (n.includes("ต้มข่าไก่")) return "https://images.unsplash.com/photo-1625398407796-82650a8c135f?w=500&auto=format&fit=crop";
+        if (n.includes("ผัดซีอิ๊ว")) return "https://images.unsplash.com/photo-1617093727343-374698b1b08d?w=500&auto=format&fit=crop";
+        if (n.includes("แกงเขียวหวาน")) return "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=500&auto=format&fit=crop";
+        if (n.includes("แกงส้ม")) return "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop";
+        if (n.includes("ข้าวผัด")) return "https://images.unsplash.com/photo-1603133872878-685f2086ca77?w=500&auto=format&fit=crop";
+        if (n.includes("กระเทียม")) return "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=500&auto=format&fit=crop";
+        if (n.includes("ก๋วยเตี๋ยวเรือ") || n.includes("น้ำตก")) return "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=500&auto=format&fit=crop";
+        if (n.includes("มัสมั่น")) return "Image/butter_chicken.png";
+        if (n.includes("ข้าวมันไก่")) return "https://images.unsplash.com/photo-1626202378233-4a11223e9a58?w=500&auto=format&fit=crop";
+        if (n.includes("ส้มตำ")) return "https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?w=500&auto=format&fit=crop";
+        if (n.includes("ลาบ")) return "https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=500&auto=format&fit=crop";
+        if (n.includes("คอหมูย่าง") || n.includes("เนื้อย่าง")) return "https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop";
+        if (n.includes("แกงเผ็ด") || n.includes("พะแนง")) return "Image/butter_chicken.png";
+        if (n.includes("ห่อหมก")) return "https://images.unsplash.com/photo-1559314809-0d155014e29e?w=500&auto=format&fit=crop";
+        if (n.includes("ทอดมัน")) return "https://images.unsplash.com/photo-1582576163090-09d3b6f8a969?w=500&auto=format&fit=crop";
+        if (n.includes("ข้าวหมูแดง") || n.includes("หมูกรอบ") || n.includes("คะน้าหมูกรอบ")) return "https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop";
+        if (n.includes("ราเมน")) return "Image/ramen.png";
+        if (n.includes("สเต็ก")) return "https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop";
+        if (n.includes("ทาโก้")) return "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500&auto=format&fit=crop";
+        if (n.includes("ฟิชแอนด์ชิปส์")) return "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=500&auto=format&fit=crop";
+        if (n.includes("พาสต้า") || n.includes("สปาเก็ตตี้") || n.includes("ลาซัญญา")) return "Image/carbonara.png";
+        if (n.includes("แซลมอน")) return "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=500&auto=format&fit=crop";
+        if (n.includes("สลัด")) return "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&auto=format&fit=crop";
+        if (n.includes("ซุปกิมจิ") || n.includes("ต็อกบกกี") || n.includes("ไก่ทอดเกาหลี")) return "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=500&auto=format&fit=crop";
+        if (n.includes("ไข่เจียว")) return "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=500&auto=format&fit=crop";
+        if (n.includes("ซี่โครงหมู")) return "https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop";
+        if (n.includes("ข้าวซอย")) return "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=500&auto=format&fit=crop";
+        if (n.includes("หอยลาย")) return "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=500&auto=format&fit=crop";
+        if (n.includes("เกี๊ยวซ่า")) return "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=500&auto=format&fit=crop";
+        if (n.includes("ผัดผักบุ้ง") || n.includes("ผัดผัก")) return "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&auto=format&fit=crop";
+        if (n.includes("เต้าหู้ทรงเครื่อง")) return "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop";
+        if (n.includes("ปูผัดผงกะหรี่")) return "https://images.unsplash.com/photo-1559314809-0d155014e29e?w=500&auto=format&fit=crop";
         return "Image/pad_thai.png";
       })(),
       ingredients: recipeIngredients,
@@ -680,10 +710,18 @@ export const generateFullRecipesDatabase = (ingredientsDb) => {
       cookTime: 10 + Math.floor(Math.random() * 30),
       description: `เมนูของหวานแสนอร่อย ละมุนลิ้น รสชาติหวานมันกำลังดี เหมาะสำหรับทานหลังมื้ออาหารหรือเป็นขนมว่างยามบ่าย`,
       image: (() => {
-        if (name.includes("ข้าวเหนียว") || name.includes("กล้วยบวชชี") || name.includes("ลอดช่อง") || name.includes("เปียกข้าวโพด")) return "Image/mango_sticky_rice.png";
-        if (name.includes("เค้ก") || name.includes("ทีรามิสุ") || name.includes("พุดดิ้ง") || name.includes("มูสเค้ก")) return "Image/tiramisu.png";
-        if (name.includes("ไดฟูกุ") || name.includes("โมจิ") || name.includes("ขนมต้ม") || name.includes("บัวลอย")) return "Image/daifuku.png";
-        if (name.includes("ปาท่องโก๋") || name.includes("ชูร์โรส") || name.includes("คุกกี้") || name.includes("โดนัท") || name.includes("วาฟเฟิล")) return "Image/churros.png";
+        const n = name.toLowerCase();
+        if (n.includes("ข้าวเหนียวมะม่วง")) return "Image/mango_sticky_rice.png";
+        if (n.includes("บัวลอย") || n.includes("ทับทิมกรอบ") || n.includes("ไดฟูกุ") || n.includes("โมจิ") || n.includes("ขนมต้ม")) return "Image/daifuku.png";
+        if (n.includes("เค้ก") || n.includes("ทีรามิสุ") || n.includes("พุดดิ้ง") || n.includes("มูส") || n.includes("ชีสพาย")) return "Image/tiramisu.png";
+        if (n.includes("ลอดช่อง") || n.includes("ซ่าหริ่ม") || n.includes("เฉาก๊วย") || n.includes("กล้วยบวชชี")) return "https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?w=500&auto=format&fit=crop";
+        if (n.includes("มาการอง")) return "https://images.unsplash.com/photo-1569864358642-9d1684040f43?w=500&auto=format&fit=crop";
+        if (n.includes("ครัวซองต์") || n.includes("วาฟเฟิล") || n.includes("แพนเค้ก") || n.includes("ทาร์ตไข่")) return "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&auto=format&fit=crop";
+        if (n.includes("โดนัท")) return "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=500&auto=format&fit=crop";
+        if (n.includes("คุกกี้")) return "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=500&auto=format&fit=crop";
+        if (n.includes("ปาท่องโก๋") || n.includes("ชูร์โรส")) return "Image/churros.png";
+        if (n.includes("ผลไม้") || n.includes("ลอยแก้ว") || n.includes("ส้มฉุน")) return "https://images.unsplash.com/photo-1519996521430-02b798c1d881?w=500&auto=format&fit=crop";
+        if (n.includes("ขนมเบื้อง") || n.includes("ทองหยิบ") || n.includes("ทองหยอด") || n.includes("ฝอยทอง") || n.includes("ขนมครก") || n.includes("ขนมถ้วย") || n.includes("หม้อแกง") || n.includes("ขนมชั้น")) return "https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?w=500&auto=format&fit=crop";
         return "Image/mango_sticky_rice.png";
       })(),
       ingredients: recipeIngredients,
@@ -709,26 +747,119 @@ export const generateFullRecipesDatabase = (ingredientsDb) => {
 export const menuItems = [
   {
     id: 1,
-    name: "ผัดไทยกุ้งสด",
-    description: "ผัดไทยเส้นจันท์เหนียวนุ่ม ผัดซอสสูตรเข้มข้น เสิร์ฟพร้อมกุ้งตัวโต",
-    price: "250 ฿",
-    image: "/Image/pad_thai.png",
+    name: "ผัดไทยกุ้งสดห่มสไบเลิศรส",
+    description: "ผัดไทยเส้นจันท์เหนียวนุ่มคลุกเคล้าซอสมะขามเข้มข้น ห่อด้วยไข่ฝอยบางดั่งสไบทองเคียงด้วยกุ้งแม่น้ำเผาตัวโต",
+    details: "ผัดไทยโบราณสูตรชาววังที่นำมารังสรรค์อย่างวิจิตรด้วยการห่อไข่ฝอยดั่งสไบทองคำ ทานคู่กับถั่วงอกออร์แกนิก ใบกุยช่ายสด หัวปลี และน้ำมะนาวคั้นสดแท้ เหมาะสำหรับผู้ที่ต้องการลิ้มลองรสชาติไทยแท้แบบดั้งเดิมที่ผสมผสานความหรูหรา",
+    priceRange: "เริ่มต้น 120 ฿ ถึง 280 ฿",
+    image: "Image/pad_thai.png",
     keyword: "padthai,noodles"
   },
   {
     id: 2,
-    name: "พิซซ่ามาร์เกริต้า",
-    description: "พิซซ่าเตาถ่าน แป้งบางกรอบ หอมกลิ่นใบโหระพาและชีสมอสซาเรลลา",
-    price: "450 ฿",
-    image: "/Image/pizza_margherita.png",
+    name: "พิซซ่ามาร์เกริต้าเตาดินฟืนสน",
+    description: "พิซซ่าอิตาเลียนคลาสสิก แป้งสาลีหมักข้ามคืนรีดมือ อบในเตาดินฟืนไม้สน หอมชีสสดมอสซาเรลลาและมะเขือเทศซานมารซาโน่",
+    details: "อบสดใหม่ทีละถาดในเตาดินก่ออิฐโบราณด้วยฟืนไม้สนธรรมชาติเพื่อกลิ่นหอมรมควันอันเป็นเอกลักษณ์ ซอสทำจากมะเขือเทศนำเข้าจากอิตาลี โรยใบโหระพาอิตาเลียนสดและน้ำมันมะกอกเอ็กซ์ตร้าเวอร์จิ้นแป้งบางกรอบหนึบในตัว",
+    priceRange: "เริ่มต้น 180 ฿ ถึง 350 ฿",
+    image: "Image/pizza_margherita.png",
     keyword: "pizza,margherita"
   },
   {
     id: 3,
-    name: "สเต็กเนื้อพรีเมียม",
-    description: "สเต็กเนื้อวัวเกรดพรีเมียม ย่างถ่านระดับความสุกตามชอบ เนื้อนุ่มฉ่ำละมุนรสเข้มข้น",
-    price: "890 ฿",
+    name: "สเต็กเนื้อริบอายวากิวออสเตรเลีย",
+    description: "สเต็กเนื้อริบอายเกรดพรีเมียม ลายหินอ่อนงดงาม ย่างเตาถ่านไม้โกงกาง เสิร์ฟพร้อมซอสไวน์แดงสูตรเข้มข้นและมันฝรั่งอบเนย",
+    details: "คัดสรรเนื้อวากิวออสเตรเลียลายหินอ่อนระดับสูง ผ่านกระบวนการ Dry-aged นาน 28 วันเพื่อรสชาติที่เข้มข้นที่สุด ย่างสุกตามชอบ ทานคู่กับหน่อไม้ฝรั่งอบ มันบดทรัฟเฟิล และกระเทียมย่างราดด้วยซอสเดมี่เกลซพอร์ตไวน์ชั้นดี",
+    priceRange: "เริ่มต้น 750 ฿ ถึง 1,500 ฿",
     image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop",
     keyword: "steak,beef"
+  },
+  {
+    id: 4,
+    name: "พาสต้าครีมซอสทรัฟเฟิลอิตาลี",
+    description: "เส้นพาสต้าโฮมเมดคลุกซอสครีมพาร์เมซานชีสแท้ ท็อปด้วยน้ำมันเห็ดทรัฟเฟิลขาวเข้มข้นและเบคอนกรอบแผ่นบาง",
+    details: "เส้นพาสต้าทำสดใหม่เหนียวนุ่ม ผัดเข้ากันกับซอสครีมไข่แดงออร์แกนิกและชีส Pecorino Romano นำเข้าจากอิตาลี เพิ่มความหรูหราด้วยการราดน้ำมันทรัฟเฟิลขาวและขูดทรัฟเฟิลดำสดด้านบน ให้กลิ่นหอมรัญจวนใจและรสชาติกลมกล่อมล้ำลึก",
+    priceRange: "เริ่มต้น 190 ฿ ถึง 420 ฿",
+    image: "Image/carbonara.png",
+    keyword: "pasta,truffle"
+  },
+  {
+    id: 5,
+    name: "แกงเขียวหวานเนื้อเซอร์ลอยน์และโรตีเนยสด",
+    description: "แกงเขียวหวานเนื้อบีฟเซอร์ลอยน์ปรุงพริกขี้หนูสวนรสจัดจ้าน เสิร์ฟพร้อมแผ่นแป้งโรตีทอดกรอบด้วยเนยฝรั่งเศส",
+    details: "พริกแกงเขียวหวานตำมือสูตรเฉพาะ เคี่ยวร่วมกับหัวกะทิแท้ 100% จนแตกมันสวยงาม ผสมผสานความนุ่มละมุนของเนื้อเซอร์ลอยน์ระดับกลาง เสิร์ฟเคียงแป้งโรตีรีดบางทอดสดร้อนๆ ชิ้นต่อชิ้นด้วยเนยแท้นำเข้าจากฝรั่งเศส",
+    priceRange: "เริ่มต้น 160 ฿ ถึง 320 ฿",
+    image: "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=500&auto=format&fit=crop",
+    keyword: "curry,roti"
+  },
+  {
+    id: 6,
+    name: "ราเมนล็อบสเตอร์ซุปมันกุ้งเคี่ยวไฟอ่อน",
+    description: "ราเมนเส้นสดในซุปทงคัตสึผสมเข้มมันกุ้งล็อบสเตอร์ยักษ์ ท็อปด้วยเนื้อหางกุ้งมังกรย่างเนยและไข่ต้มยางมะตูม",
+    details: "น้ำซุปกระดูกหมูที่เคี่ยวนานกว่า 18 ชั่วโมงเพื่อความหวานธรรมชาติ ผสานกับมันกุ้งล็อบสเตอร์หอมเค็มเข้มข้น เสิร์ฟพร้อมหางล็อบสเตอร์ที่ปรุงอย่างเชี่ยวชาญทาเนยกระเทียม ทานคู่กับสาหร่ายโนริแผ่นยักษ์และหน่อไม้ญี่ปุ่นรสกลมกล่อม",
+    priceRange: "เริ่มต้น 450 ฿ ถึง 980 ฿",
+    image: "Image/ramen.png",
+    keyword: "ramen,lobster"
+  },
+  {
+    id: 7,
+    name: "แกงส้มชะอมกุ้งแม่น้ำเผาทรงเครื่อง",
+    description: "แกงส้มผักรวมรสจัดจ้านโบราณปรุงพริกสดโขลกเนื้อปลาช่อน เคียงด้วยกุ้งแม่น้ำยักษ์เผามันเยิ้มและไข่ทอดชะอม",
+    details: "แกงส้มสูตรต้นตำรับที่ใช้เนื้อปลาช่อนทะเลสดโขลกกับน้ำพริกแกงทำให้ได้น้ำซุปข้นคลัก บีบน้ำมะนาวแป้นสดรสเปรี้ยวเค็มหวานครบรส เสิร์ฟพร้อมกุ้งแม่น้ำยักษ์เผาเตาถ่านมันกุ้งสีทองไหลเยิ้ม และไข่เจียวชะอมทอดเนื้อหนาซับน้ำแกง",
+    priceRange: "เริ่มต้น 140 ฿ ถึง 320 ฿",
+    image: "Image/tom_yum.png",
+    keyword: "soup,shrimp"
+  },
+  {
+    id: 8,
+    name: "ข้าวมันไก่เบญจาออร์แกนิกสมุนไพร",
+    description: "ข้าวมันหอมมะลิเม็ดร่วนหอมมันปรุงน้ำซุปไก่ ทานคู่กับเนื้ออกและสะโพกไก่เบญจานุ่มชุ่มฉ่ำ ปลอดสารเคมี 100%",
+    details: "ใช้ไก่เบญจาออร์แกนิกที่เลี้ยงด้วยข้าวกล้องสมุนไพรธรรมชาติ ทำให้เนื้อไก่มีความหนานุ่มชุ่มฉ่ำและปราศจากสารเร่งการเจริญเติบโต ข้าวมันหุงด้วยกรรมวิธีโบราณให้เม็ดสวยงาม น้ำจิ้มสูตรเต้าเจี้ยวพริกขิงรสจัดจ้านเสิร์ฟคู่ซุปโครงไก่ต้มฟักมะนาวดองชุ่มคอ",
+    priceRange: "เริ่มต้น 85 ฿ ถึง 180 ฿",
+    image: "https://images.unsplash.com/photo-1626202378233-4a11223e9a58?w=500&auto=format&fit=crop",
+    keyword: "chicken,rice"
+  },
+  {
+    id: 9,
+    name: "ข้าวเหนียวมะม่วงน้ำดอกไม้ทองพรีเมียม",
+    description: "ข้าวเหนียวมูนเขี้ยวงูอบควันเทียนและใบเตยคั้นสด หวานหอมทานคู่มะม่วงน้ำดอกไม้สีเหลืองสุกหวานฉ่ำละมุนลิ้น",
+    details: "คัดสรรข้าวเหนียวเขี้ยวงูคุณภาพสูงจากเชียงราย มูนสดใหม่ด้วยกะทิเข้มข้นคั้นสดอบควันเทียนและใบเตยสีเขียวธรรมชาติอ่อนโยน ทานเคียงคู่มะม่วงน้ำดอกไม้ทองคัดสรรพิเศษผลโต รสหวานเจี๊ยบ ราดด้วยน้ำกะทิข้นเกลือบางๆ และโรยถั่วทองคั่วกรอบ",
+    priceRange: "เริ่มต้น 90 ฿ ถึง 180 ฿",
+    image: "Image/mango_sticky_rice.png",
+    keyword: "mango,sweet"
+  },
+  {
+    id: 10,
+    name: "ซูเฟล่แพนเค้กมัทฉะอุจิวิปครีมสตรอว์เบอร์รี",
+    description: "แพนเค้กซูเฟล่เนื้อเด้งดึ๋งนุ่มฟูเบาดั่งปุยเมฆ ราดซอสมัทฉะแท้เกรดพิธีการเข้มข้นและผลสตรอว์เบอร์รีนำเข้า",
+    details: "ทำสดจานต่อจานด้วยอุณหภูมิต่ำเพื่อความนุ่มละมุนละลายในปากอย่างแท้จริง ราดซอสมัทฉะแท้นำเข้าจากเมืองอุจิ แหล่งปลูกชาเขียวที่ดีที่สุดในญี่ปุ่น ทานคู่กับสตรอว์เบอร์รีสดรสเปรี้ยวอมหวาน ถั่วแดงกวนละมุน และวิปครีมแท้เบาหวานน้อย",
+    priceRange: "เริ่มต้น 120 ฿ ถึง 250 ฿",
+    image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&auto=format&fit=crop",
+    keyword: "pancake,matcha"
+  },
+  {
+    id: 11,
+    name: "มูสช็อกโกแลตเบลเยียม 70% ไร้น้ำตาล (Keto)",
+    description: "มูสช็อกโกแลตเข้มข้นระดับพรีเมียมจากเบลเยียม ปรุงแบบคีโตเจนิกด้วยสารให้ความหวานธรรมชาติไร้น้ำตาล",
+    details: "ของหวานระดับพรีเมียมสำหรับคนรักสุขภาพ คัดช็อกโกแลตแท้ 70% จากเบลเยียม ตีกับวิปปิ้งครีมแท้จนเนื้อเป็นฟองมูสนุ่มแน่นละมุนลิ้น ใช้สารทดแทนความหวานอิริทริทอลเกรดพรีเมียมปราศจากพลังงาน แต่งกลิ่นวนิลลาแท้ฝักมาดากัสการ์และผลราสป์เบอร์รีสดเคียงข้าง",
+    priceRange: "เริ่มต้น 95 ฿ ถึง 210 ฿",
+    image: "Image/tiramisu.png",
+    keyword: "mousse,chocolate"
+  },
+  {
+    id: 12,
+    name: "บัวลอยสามสีน้ำกะทิสดมะพร้าวอ่อนไข่หวาน",
+    description: "บัวลอยแป้งนุ่มนวดสีธรรมชาติ (ฟักทอง, อัญชัน, ใบเตย) ในน้ำกะทิหอมสดมะพร้าวอ่อนและไข่หวานยางมะตูมเยิ้ม",
+    details: "ตัวแป้งนวดสดใหม่ใช้ส่วนผสมธรรมชาติให้สีพาสเทลสวยงาม ปั้นเม็ดเล็กต้มสุกดี ทานในน้ำเชื่อมกะทิสดหอมอบควันเทียน เคี่ยวร่วมกับเนื้อมะพร้าวอ่อนกรุบกรอบ ท็อปด้วยไข่หวานยางมะตูมหวานมันพอดีคำ",
+    priceRange: "เริ่มต้น 65 ฿ ถึง 120 ฿",
+    image: "Image/daifuku.png",
+    keyword: "bualoy,sweet"
+  },
+  {
+    id: 13,
+    name: "ครัวซองต์เนยฝรั่งเศสสอดไส้อัลมอนด์ครีมลาวา",
+    description: "ครัวซองต์อบเนยแท้ฝรั่งเศสพับลายสวยงาม แป้งกรอบนอกโพรงนุ่มใน ราดครีมลอนดอนอัลมอนด์ลาวาเยิ้มๆ",
+    details: "ครัวซองต์ทำสดใหม่ทุกวัน ใช้เนยสดแท้ AOP นำเข้าจากแคว้นนอร์มังดี ประเทศฝรั่งเศส เพื่อให้ได้กลิ่นเนยและโครงสร้างโพรงแป้งที่ซ้อนชั้นกรอบสวยงามเป็นเลิศ อบสอดไส้อัลมอนด์แฟรนจิเพนลาวารสครีมหวานมัน ท็อปปิ้งด้วยเกล็ดอัลมอนด์สไลด์อบกรอบ",
+    priceRange: "เริ่มต้น 80 ฿ ถึง 160 ฿",
+    image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&auto=format&fit=crop",
+    keyword: "croissant,bakery"
   }
 ];

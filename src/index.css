@@ -54,29 +54,108 @@ body {
 }
 
 /* ========================================= */
-/* ☀️ ธีมฤดูร้อน (Summer Resort Luxury) */
-/* ให้อารมณ์หรูหราแบบรีสอร์ตริมทะเล โปร่งสบายแต่ยังพรีเมียม */
+/* ❄️ ธีมฤดูหนาว (Winter - Cool Frosty Ice Blue) */
+/* ให้อารมณ์เย็นสบาย สงบ และสว่างดั่งหิมะและฟ้าน้ำแข็ง */
 /* ========================================= */
-.theme-summer {
-  --color-bg-cream: #FAF6ED;
-  /* ครีมทรายอุ่นๆ (Warm Sand) สะท้อนแสงแดดอ่อนๆ */
-  --color-primary-green: #244C3A;
-  /* เขียวใบปาล์มเข้ม (Tropical Dark Green) */
-  --color-accent-gold: #CFAB54;
-  /* ทองประกายแดด (Sunlit Gold) จะอบอุ่นขึ้นนิดนึง */
+.theme-winter {
+  --color-bg-cream: #F0F4F8;
+  --bg-primary: #F0F4F8;
+  --bg-secondary: #FFFFFF;
+  --bg-card: rgba(255, 255, 255, 0.75);
+  --color-primary-green: #0F2A4A;
+  --color-accent-gold: #4C82B1;
+  --color-accent: #4C82B1;
+  --color-accent-hover: #37638B;
+  --color-accent-text: #FFFFFF;
+  --color-text-dark: #1E293B;
+  --color-text-main: #1E293B;
+  --color-text-muted: #475569;
+  --border-card: rgba(76, 130, 177, 0.25);
+  --shadow-glow: 0 8px 32px rgba(15, 42, 74, 0.04);
+}
+.dark-mode.theme-winter, .theme-winter.dark-mode {
+  --bg-primary: #0B0F19;
+  --bg-secondary: #111827;
+  --bg-card: rgba(17, 24, 39, 0.7);
+  --color-primary-green: #38BDF8;
+  --color-accent-gold: #0284C7;
+  --color-accent: #0284C7;
+  --color-accent-hover: #0369A1;
+  --color-accent-text: #FFFFFF;
+  --color-text-dark: #F8FAFC;
+  --color-text-main: #F8FAFC;
+  --color-text-muted: #9CA3AF;
+  --border-card: rgba(56, 189, 248, 0.2);
 }
 
 /* ========================================= */
-/* 🌧️ ธีมฤดูฝน (Monsoon Moody Elegance) */
-/* ให้อารมณ์หรูหราแบบสุขุม นุ่มลึก และโรแมนติก */
+/* ☀️ ธีมฤดูร้อน (Summer - Sunlit Sunset Orange) */
+/* ให้อารมณ์อบอุ่น สดใส มีชีวิตชีวาในโทนส้มทรายและอิฐเผา */
+/* ========================================= */
+.theme-summer {
+  --color-bg-cream: #FCF6EC;
+  --bg-primary: #FCF6EC;
+  --bg-secondary: #FFFDF9;
+  --bg-card: rgba(255, 255, 255, 0.75);
+  --color-primary-green: #6B230B;
+  --color-accent-gold: #E26E2F;
+  --color-accent: #E26E2F;
+  --color-accent-hover: #B5511D;
+  --color-accent-text: #FFFFFF;
+  --color-text-dark: #3F1D11;
+  --color-text-main: #3F1D11;
+  --color-text-muted: #785244;
+  --border-card: rgba(226, 110, 47, 0.25);
+  --shadow-glow: 0 8px 32px rgba(107, 35, 11, 0.04);
+}
+.dark-mode.theme-summer, .theme-summer.dark-mode {
+  --bg-primary: #170E0B;
+  --bg-secondary: #241511;
+  --bg-card: rgba(36, 21, 17, 0.7);
+  --color-primary-green: #F97316;
+  --color-accent-gold: #EA580C;
+  --color-accent: #EA580C;
+  --color-accent-hover: #CA8A04;
+  --color-accent-text: #FFFFFF;
+  --color-text-dark: #FFF7ED;
+  --color-text-main: #FFF7ED;
+  --color-text-muted: #D1A394;
+  --border-card: rgba(249, 115, 22, 0.2);
+}
+
+/* ========================================= */
+/* 🌧️ ธีมฤดูฝน (Rainy - Lush Forest & Rain Teal) */
+/* ให้อารมณ์สดชื่น ชุ่มชื่น และโรแมนติกในโทนป่าเขียวขจีและฟ้าฝน */
 /* ========================================= */
 .theme-rainy {
-  --color-bg-cream: #F2F4F3;
-  /* ครีมอมเทาไข่มุก (Pearl/Oyster) ให้อารมณ์เย็นและสงบ */
-  --color-primary-green: #183A2E;
-  /* เขียวสนเข้มอมน้ำเงิน (Pine/Teal Green) */
-  --color-accent-gold: #BFA37E;
-  /* ทองแอนทีค (Antique Gold) ทองหม่นๆ ดูลึกลับและแพง */
+  --color-bg-cream: #E7ECE9;
+  --bg-primary: #E7ECE9;
+  --bg-secondary: #EDF3F0;
+  --bg-card: rgba(255, 255, 255, 0.75);
+  --color-primary-green: #0B2B20;
+  --color-accent-gold: #2A795A;
+  --color-accent: #2A795A;
+  --color-accent-hover: #1F5C43;
+  --color-accent-text: #FFFFFF;
+  --color-text-dark: #192722;
+  --color-text-main: #192722;
+  --color-text-muted: #4B6057;
+  --border-card: rgba(42, 121, 90, 0.25);
+  --shadow-glow: 0 8px 32px rgba(11, 43, 32, 0.04);
+}
+.dark-mode.theme-rainy, .theme-rainy.dark-mode {
+  --bg-primary: #06110D;
+  --bg-secondary: #0A1C16;
+  --bg-card: rgba(10, 28, 22, 0.7);
+  --color-primary-green: #10B981;
+  --color-accent-gold: #059669;
+  --color-accent: #059669;
+  --color-accent-hover: #047857;
+  --color-accent-text: #FFFFFF;
+  --color-text-dark: #ECFDF5;
+  --color-text-main: #ECFDF5;
+  --color-text-muted: #86EFAC;
+  --border-card: rgba(16, 185, 129, 0.2);
 }
 
 .dark-mode {
